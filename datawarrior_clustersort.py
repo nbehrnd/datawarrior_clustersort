@@ -22,20 +22,20 @@ import sys
 def get_args():
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
-	description=
-	"""Sort DataWarrior's cluster list, begin with the most populated.
-	For an input file 'example.txt', a new record 'example_sort.txt'
-	is written DataWarrior may access directly (Ctrl + O).""")
+        description=
+        """Sort DataWarrior's cluster list, begin with the most populated.
+        For an input file 'example.txt', a new record 'example_sort.txt'
+        is written DataWarrior may access directly (Ctrl + O).""")
 
     parser.add_argument("source_file",
-			metavar="FILE",
-			help="DataWarrior's cluster export as .txt file.")
+                        metavar="FILE",
+                        help="DataWarrior's cluster export as .txt file.")
 
     parser.add_argument(
-	"-r",
-	"--reverse",
-	action="store_false",
-	help="""Override the default; sort in the permanent record starts
+        "-r",
+        "--reverse",
+        action="store_false",
+        help="""Override the default; sort in the permanent record starts
 	with the cluster least populated and ends with the cluster containing
 	the most molecules.""")
 
@@ -47,11 +47,11 @@ def access_raw_data(input_file=""):
     raw_data = []
 
     try:
-	with open(input_file, encoding="utf-8", mode="r") as source:
-	    raw_data = source.readlines()
+        with open(input_file, encoding="utf-8", mode="r") as source:
+            raw_data = source.readlines()
     except OSError:
-	print(f"Input file {input_file} was not accessible.  Exit.")
-	sys.exit()
+        print(f"Input file {input_file} was not accessible.  Exit.")
+        sys.exit()
 
     return raw_data
 
@@ -70,18 +70,18 @@ def read_dw_list(raw_data=[]):
 
     source = csv.reader(raw_data, delimiter="\t")
     for row in source:
-	cluster_label_on_molecule = row[1]
-	dw_cluster_labels.append(cluster_label_on_molecule)
+        cluster_label_on_molecule = row[1]
+        dw_cluster_labels.append(cluster_label_on_molecule)
     del dw_cluster_labels[0]  # do not consider the table header
 
     # build and report a dictionary:
     count = {}
     for label in dw_cluster_labels:
-	count.setdefault(label, 0)
-	count[label] = count[label] + 1
+        count.setdefault(label, 0)
+        count[label] = count[label] + 1
 
     for key, value in count.items():
-	print("cluster: ", key, "\t molecules: ", value)
+        print("cluster: ", key, "\t molecules: ", value)
 
     return count
 
@@ -89,9 +89,9 @@ def read_dw_list(raw_data=[]):
 def entry_sorter(count={}, reversed_order=False):
     """Sort the popularity of the clusters either way."""
     if reversed_order:
-	sorted_list = sorted(count, key=count.__getitem__, reverse=True)
+        sorted_list = sorted(count, key=count.__getitem__, reverse=True)
     else:
-	sorted_list = sorted(count, key=count.__getitem__, reverse=False)
+        sorted_list = sorted(count, key=count.__getitem__, reverse=False)
     return sorted_list
 
 
@@ -101,14 +101,14 @@ def scrutin_by_label(raw_data=[], population_list=[]):
     new_cluster_label = 1
 
     for entry in population_list:
-	source = csv.reader(raw_data, delimiter="\t")
+        source = csv.reader(raw_data, delimiter="\t")
 
-	for row in source:
-	    if row[1] == entry:
-		retain = "\t".join([row[0], str(new_cluster_label), row[2]])
-		reporter_list.append(retain)
+        for row in source:
+            if row[1] == entry:
+                retain = "\t".join([row[0], str(new_cluster_label), row[2]])
+                reporter_list.append(retain)
 
-	new_cluster_label += 1
+        new_cluster_label += 1
 
     return reporter_list
 
@@ -119,13 +119,13 @@ def permanent_report(input_file="", topline="", listing=[]):
     report_file = "".join([stem_input_file, str("_sort.txt")])
 
     try:
-	with open(report_file, encoding="utf-8", mode="w") as newfile:
-	    newfile.write("".join([topline, "\n"]))
-	    for entry in listing:
-		newfile.write("".join([entry, "\n"]))
+        with open(report_file, encoding="utf-8", mode="w") as newfile:
+            newfile.write("".join([topline, "\n"]))
+            for entry in listing:
+                newfile.write("".join([entry, "\n"]))
     except OSError:
-	print(f"Error to export record into {report_file}.  Exit.")
-	sys.exit()
+        print(f"Error to export record into {report_file}.  Exit.")
+        sys.exit()
     return report_file
 
 
