@@ -4,7 +4,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022.
 # date:    <2022-04-22 Fri>
-# edit:
+# edit:    <2022-04-26 Tue>
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 For context and motivation, see DataWarrior's discussion board after mcmc's
@@ -16,6 +16,7 @@ The script uses only functions of Python's standard library."""
 import argparse
 import csv
 import os
+import re
 import sys
 
 
@@ -64,13 +65,29 @@ def read_header(raw_data=[]):
     return table_header
 
 
-def read_dw_list(raw_data=[]):
+def identify_cluster_column(table_header):
+    """Identify the column with DW's assigned cluster labels.
+
+    The first occurrence of 'Cluster No' identified by a regular expression is
+    assumed to indicate the column of interest.  For this, the split has to be
+    an explicit separator (tabulator)."""
+    column_heads = table_header.split("\t")
+    list_of_matches = [
+        i for i, item in enumerate(column_heads)
+        if re.search("Cluster No", item)
+    ]
+    column_number = int(list_of_matches[0])
+
+    return column_number
+
+
+def read_dw_list(raw_data, special_position):
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
     source = csv.reader(raw_data, delimiter="\t")
     for row in source:
-        cluster_label_on_molecule = row[1]
+        cluster_label_on_molecule = row[special_position]
         dw_cluster_labels.append(cluster_label_on_molecule)
     del dw_cluster_labels[0]  # do not consider the table header
 
@@ -95,8 +112,8 @@ def entry_sorter(count={}, reversed_order=False):
     return sorted_list
 
 
-def scrutin_by_label(raw_data=[], population_list=[]):
-    """Sort the molecules according to the cluster popularity."""
+def scrutin_by_label(raw_data, population_list, special_position):
+    """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
 
@@ -104,8 +121,12 @@ def scrutin_by_label(raw_data=[], population_list=[]):
         source = csv.reader(raw_data, delimiter="\t")
 
         for row in source:
-            if row[1] == entry:
-                retain = "\t".join([row[0], str(new_cluster_label), row[2]])
+            if row[special_position] == entry:
+
+                cell_entries = row
+                del cell_entries[special_position]
+                cell_entries.insert(special_position, str(new_cluster_label))
+                retain = "\t".join(cell_entries)
                 reporter_list.append(retain)
 
         new_cluster_label += 1
@@ -126,6 +147,7 @@ def permanent_report(input_file="", topline="", listing=[]):
     except OSError:
         print(f"Error to export record into {report_file}.  Exit.")
         sys.exit()
+
     return report_file
 
 
@@ -139,17 +161,20 @@ def main():
     print("Preview, sort by DataWarrior's cluster labels:")
     raw_data = access_raw_data(input_file)
     headline = read_header(raw_data)
-    popularity = read_dw_list(raw_data)
+    special_position = identify_cluster_column(headline)
+    popularity = read_dw_list(raw_data, special_position)
 
     sorted_population_list = entry_sorter(popularity, sort_option)
-    report_list = scrutin_by_label(raw_data, sorted_population_list)
+    report_list = scrutin_by_label(raw_data, sorted_population_list,
+                                   special_position)
     report_file = permanent_report(input_file, headline, report_list)
 
     # work on new data:
     print("\nclusters newly sorted and labeled:")
     raw_data = access_raw_data(report_file)
     headline = read_header(raw_data)
-    popularity = read_dw_list(raw_data)
+    special_position = identify_cluster_column(headline)
+    popularity = read_dw_list(raw_data, special_position)
 
 
 if __name__ == "__main__":
