@@ -191,8 +191,8 @@ def main():
 #    print("Preview, sort by DataWarrior's cluster labels:")
 #    raw_data = access_raw_data(input_file)
 #    headline = read_header(raw_data)
-    special_position = identify_cluster_column(head_line)
-    print(f"The cluster label is in column {special_position}.")
+    cluster_label = identify_cluster_column(head_line)
+    print(f"The cluster label is in column {cluster_label}.")
 
 #    popularity = read_dw_list(raw_data, special_position)
 
