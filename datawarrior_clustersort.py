@@ -67,26 +67,26 @@ def file_reader(input_file=""):
     return head_line, table_body
 
 
-def access_raw_data(input_file=""):
-    """Access DW's exported cluster list."""
-    raw_data = []
+#def access_raw_data(input_file=""):
+#    """Access DW's exported cluster list."""
+#    raw_data = []
 
-    try:
-        with open(input_file, encoding="utf-8", mode="r") as source:
-            raw_data = source.readlines()
-    except OSError:
-        print(f"Input file {input_file} was not accessible.  Exit.")
-        sys.exit()
+#    try:
+#        with open(input_file, encoding="utf-8", mode="r") as source:
+#            raw_data = source.readlines()
+#    except OSError:
+#        print(f"Input file {input_file} was not accessible.  Exit.")
+#        sys.exit()
 
-    return raw_data
+#    return raw_data
 
 
-def read_header(raw_data=[]):
-    """Extract the headline of DW's table."""
-    table_header = ""
-    table_header = str(raw_data[0]).strip()
+#def read_header(raw_data=[]):
+#    """Extract the headline of DW's table."""
+#    table_header = ""
+#    table_header = str(raw_data[0]).strip()
 
-    return table_header
+#    return table_header
 
 
 def identify_cluster_column(table_header):
@@ -191,7 +191,9 @@ def main():
 #    print("Preview, sort by DataWarrior's cluster labels:")
 #    raw_data = access_raw_data(input_file)
 #    headline = read_header(raw_data)
-#    special_position = identify_cluster_column(headline)
+    special_position = identify_cluster_column(head_line)
+    print(f"The cluster label is in column {special_position}.")
+
 #    popularity = read_dw_list(raw_data, special_position)
 
 #    sorted_population_list = entry_sorter(popularity, sort_option)
