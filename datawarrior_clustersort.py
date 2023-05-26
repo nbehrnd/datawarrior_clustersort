@@ -104,15 +104,14 @@ def identify_cluster_column(table_header):
     return column_number
 
 
-def read_dw_list(raw_data, special_position):
+def read_dw_list(raw_data, cluster_label):
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
     source = csv.reader(raw_data, delimiter="\t")
     for row in source:
-        cluster_label_on_molecule = row[special_position]
+        cluster_label_on_molecule = row[cluster_label]
         dw_cluster_labels.append(cluster_label_on_molecule)
-    del dw_cluster_labels[0]  # do not consider the table header
 
     # build and report a dictionary:
     count = {}
@@ -120,8 +119,9 @@ def read_dw_list(raw_data, special_position):
         count.setdefault(label, 0)
         count[label] = count[label] + 1
 
+    print("\nDataWarrior's assignment of clusters:")
     for key, value in count.items():
-        print("cluster: ", key, "\t molecules: ", value)
+        print(f"cluster: {key:>8} molecules: {value:>8}")
 
     return count
 
@@ -195,6 +195,7 @@ def main():
     print(f"The cluster label is in column {cluster_label}.")
 
 #    popularity = read_dw_list(raw_data, special_position)
+    popularity = read_dw_list(table_body, cluster_label)
 
 #    sorted_population_list = entry_sorter(popularity, sort_option)
 #    report_list = scrutin_by_label(raw_data, sorted_population_list,
