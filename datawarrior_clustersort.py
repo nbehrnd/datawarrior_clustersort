@@ -67,18 +67,19 @@ def file_reader(input_file=""):
     return head_line, table_body
 
 
-#def access_raw_data(input_file=""):
-#    """Access DW's exported cluster list."""
-#    raw_data = []
+def access_raw_data(input_file=""):
+    """Access DW's exported cluster list."""
+    raw_data = []
 
-#    try:
-#        with open(input_file, encoding="utf-8", mode="r") as source:
-#            raw_data = source.readlines()
-#    except OSError:
-#        print(f"Input file {input_file} was not accessible.  Exit.")
-#        sys.exit()
+    try:
+        with open(input_file, encoding="utf-8", mode="rt") as source:
+            raw_data = source.readlines()
+    except OSError:
+        print(f"Input file {input_file} was not accessible.  Exit.")
+        sys.exit()
 
-#    return raw_data
+    table_body_2 = raw_data[1:]
+    return table_body_2
 
 
 #def read_header(raw_data=[]):
@@ -205,12 +206,12 @@ def main():
                                    cluster_label)
     report_file = permanent_report(args.file.name, head_line, report_list)
 
-#    # work on new data:
-#    print("\nclusters newly sorted and labeled:")
-#    raw_data = access_raw_data(report_file)
+    # work on new data:
+    print("\nclusters newly sorted and labeled:")
+    raw_data_2 = access_raw_data(report_file)
 #    headline = read_header(raw_data)
 #    special_position = identify_cluster_column(headline)
-#    popularity = read_dw_list(raw_data, special_position)
+    popularity_2 = read_dw_list(raw_data_2, cluster_label) #special_position)
 
 if __name__ == "__main__":
     main()
