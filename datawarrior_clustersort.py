@@ -203,7 +203,7 @@ def main():
     print(sorted_population_list)
     report_list = scrutin_by_label(table_body, sorted_population_list,
                                    cluster_label)
-#    report_file = permanent_report(input_file, headline, report_list)
+    report_file = permanent_report(args.file.name, head_line, report_list)
 
 #    # work on new data:
 #    print("\nclusters newly sorted and labeled:")
