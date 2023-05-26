@@ -4,9 +4,14 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022.
 # date:    <2022-04-22 Fri>
-# edit:    <2022-04-26 Tue>
+# edit:    <2023-05-26 Fri>
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
+DataWarrior can recognize structure similarity in a set of molecules.  The
+more similar molecules are then grouped in clusters labeled by integers, a
+result DataWarrior can store as .dwar, or export as .sdf file.  However so
+far, the program however does not provide to report the molecules in a sort
+based on the popularity of their corresponding clusters.
 For context and motivation, see DataWarrior's discussion board after mcmc's
 post 'Assign cluster name based on cluster size' by April 7, 2022
 (https://openmolecules.org/forum/index.php?t=msg&th=586&goto=1587&#msg_1587).
@@ -23,22 +28,28 @@ import sys
 def get_args():
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
-        description=
-        """Sort DataWarrior's cluster list, begin with the most populated.
-        For an input file 'example.txt', a new record 'example_sort.txt'
-        is written DataWarrior may access directly (Ctrl + O).""")
+        description="""Sort DataWarrior's cluster list based on the number of
+        molecules per cluster.  The triage by frequency reports the cluster most
+        populous first.  After processing input file `example.txt`, the newly
+        written record `example_sort.txt` can be accessed directly by
+        DataWarrior by the short cut `Ctrl + O`.""",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
-    parser.add_argument("source_file",
-                        metavar="FILE",
-                        help="DataWarrior's cluster export as .txt file.")
+    parser.add_argument(
+        "file",
+        metavar="file",
+        type=argparse.FileType("rt"),
+        help="DataWarrior's cluster list which was exported as .txt file",
+    )
 
     parser.add_argument(
         "-r",
         "--reverse",
-        action="store_false",
-        help="""Override the default; sort in the permanent record starts
-	with the cluster least populated and ends with the cluster containing
-	the most molecules.""")
+        action="store_true",
+        help="""override the default sort sequence; i.e. assign the least
+        populous cluster the lowest label""",
+    )
 
     return parser.parse_args()
 
@@ -73,8 +84,7 @@ def identify_cluster_column(table_header):
     an explicit separator (tabulator)."""
     column_heads = table_header.split("\t")
     list_of_matches = [
-        i for i, item in enumerate(column_heads)
-        if re.search("Cluster No", item)
+        i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
     ]
     column_number = int(list_of_matches[0])
 
@@ -122,7 +132,6 @@ def scrutin_by_label(raw_data, population_list, special_position):
 
         for row in source:
             if row[special_position] == entry:
-
                 cell_entries = row
                 del cell_entries[special_position]
                 cell_entries.insert(special_position, str(new_cluster_label))
@@ -154,28 +163,30 @@ def permanent_report(input_file="", topline="", listing=[]):
 def main():
     """Join the functions."""
     args = get_args()
-    input_file = args.source_file
-    sort_option = args.reverse  # .true. == start by the least popular cluster
+    print(args)
 
-    # work on old data:
-    print("Preview, sort by DataWarrior's cluster labels:")
-    raw_data = access_raw_data(input_file)
-    headline = read_header(raw_data)
-    special_position = identify_cluster_column(headline)
-    popularity = read_dw_list(raw_data, special_position)
 
-    sorted_population_list = entry_sorter(popularity, sort_option)
-    report_list = scrutin_by_label(raw_data, sorted_population_list,
-                                   special_position)
-    report_file = permanent_report(input_file, headline, report_list)
+#    input_file = args.file
+#    sort_option = args.reverse  # .true. == start by the least popular cluster
 
-    # work on new data:
-    print("\nclusters newly sorted and labeled:")
-    raw_data = access_raw_data(report_file)
-    headline = read_header(raw_data)
-    special_position = identify_cluster_column(headline)
-    popularity = read_dw_list(raw_data, special_position)
+#    # work on old data:
+#    print("Preview, sort by DataWarrior's cluster labels:")
+#    raw_data = access_raw_data(input_file)
+#    headline = read_header(raw_data)
+#    special_position = identify_cluster_column(headline)
+#    popularity = read_dw_list(raw_data, special_position)
 
+#    sorted_population_list = entry_sorter(popularity, sort_option)
+#    report_list = scrutin_by_label(raw_data, sorted_population_list,
+#                                   special_position)
+#    report_file = permanent_report(input_file, headline, report_list)
+
+#    # work on new data:
+#    print("\nclusters newly sorted and labeled:")
+#    raw_data = access_raw_data(report_file)
+#    headline = read_header(raw_data)
+#    special_position = identify_cluster_column(headline)
+#    popularity = read_dw_list(raw_data, special_position)
 
 if __name__ == "__main__":
     main()
