@@ -120,7 +120,7 @@ def read_dw_list(raw_data, cluster_label):
         count.setdefault(label, 0)
         count[label] = count[label] + 1
 
-    print("\nDataWarrior's assignment of clusters:")
+#    print("\nDataWarrior's assignment of clusters:")
     for key, value in count.items():
         print(f"cluster: {key:>8} molecules: {value:>8}")
 
@@ -197,6 +197,7 @@ def main():
     print(f"The cluster label is in column {cluster_label}.")
 
 #    popularity = read_dw_list(raw_data, special_position)
+    print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, cluster_label)
 
 #    sorted_population_list = entry_sorter(popularity, sort_option)
