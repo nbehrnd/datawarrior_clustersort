@@ -54,6 +54,19 @@ def get_args():
     return parser.parse_args()
 
 
+def file_reader(input_file=""):
+    """access the data as provided by DataWarrior's .txt file
+
+    Assuming DW's file is less than half of the (remaining) available
+    RAM of the computer used, the whole content of input file is read."""
+    raw_table = input_file.read().splitlines()
+
+    head_line = raw_table[0]
+    table_body = raw_table[1:]
+
+    return head_line, table_body
+
+
 def access_raw_data(input_file=""):
     """Access DW's exported cluster list."""
     raw_data = []
@@ -165,7 +178,12 @@ def main():
     args = get_args()
     print(args)
 
+    head_line, table_body = file_reader(args.file)
 
+    print("echo")
+    print(f"head_line: {head_line}")
+    print(f"3 lines: {table_body[:3]}")
+    print(f"There are {len(table_body)} entries.")
 #    input_file = args.file
 #    sort_option = args.reverse  # .true. == start by the least popular cluster
 
