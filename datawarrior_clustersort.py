@@ -136,19 +136,19 @@ def entry_sorter(count={}, reversed_order=None):
     return sorted_list
 
 
-def scrutin_by_label(raw_data, population_list, special_position):
+def scrutin_by_label(table_body, population_list, old_cluster_label):
     """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
 
     for entry in population_list:
-        source = csv.reader(raw_data, delimiter="\t")
+        source = csv.reader(table_body, delimiter="\t")
 
         for row in source:
-            if row[special_position] == entry:
+            if row[old_cluster_label] == entry:
                 cell_entries = row
-                del cell_entries[special_position]
-                cell_entries.insert(special_position, str(new_cluster_label))
+                del cell_entries[old_cluster_label]
+                cell_entries.insert(old_cluster_label, str(new_cluster_label))
                 retain = "\t".join(cell_entries)
                 reporter_list.append(retain)
 
@@ -201,8 +201,8 @@ def main():
 #    sorted_population_list = entry_sorter(popularity, sort_option)
     sorted_population_list = entry_sorter(popularity, args.reverse)
     print(sorted_population_list)
-#    report_list = scrutin_by_label(raw_data, sorted_population_list,
-#                                   special_position)
+    report_list = scrutin_by_label(table_body, sorted_population_list,
+                                   cluster_label)
 #    report_file = permanent_report(input_file, headline, report_list)
 
 #    # work on new data:
