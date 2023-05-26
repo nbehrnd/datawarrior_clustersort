@@ -29,9 +29,9 @@ def get_args():
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
-        molecules per cluster.  The triage by frequency reports the cluster most
-        populous first.  After processing input file `example.txt`, the newly
-        written record `example_sort.txt` can be accessed directly by
+        molecules per cluster.  The triage by frequency reports the cluster
+        most populous first.  After processing input file `example.txt`, the
+        newly written record `example_sort.txt` can be accessed directly by
         DataWarrior by the short cut `Ctrl + O`.""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -82,14 +82,6 @@ def access_raw_data(input_file=""):
     return table_body_2
 
 
-#def read_header(raw_data=[]):
-#    """Extract the headline of DW's table."""
-#    table_header = ""
-#    table_header = str(raw_data[0]).strip()
-
-#    return table_header
-
-
 def identify_cluster_column(table_header):
     """Identify the column with DW's assigned cluster labels.
 
@@ -98,7 +90,8 @@ def identify_cluster_column(table_header):
     an explicit separator (tabulator)."""
     column_heads = table_header.split("\t")
     list_of_matches = [
-        i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
+        i for i, item in enumerate(column_heads)
+        if re.search("Cluster No", item)
     ]
     column_number = int(list_of_matches[0])
 
@@ -120,7 +113,7 @@ def read_dw_list(raw_data, cluster_label):
         count.setdefault(label, 0)
         count[label] = count[label] + 1
 
-#    print("\nDataWarrior's assignment of clusters:")
+    #    print("\nDataWarrior's assignment of clusters:")
     for key, value in count.items():
         print(f"cluster: {key:>8} molecules: {value:>8}")
 
@@ -129,7 +122,7 @@ def read_dw_list(raw_data, cluster_label):
 
 def entry_sorter(count={}, reversed_order=None):
     """Sort the popularity of the clusters either way."""
-    print(f"status reversed_order: {reversed_order}")
+    #     print(f"status reversed_order: {reversed_order}")
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=True)
     else:
@@ -178,31 +171,18 @@ def permanent_report(input_file="", topline="", listing=[]):
 def main():
     """Join the functions."""
     args = get_args()
-    print(args)
 
     head_line, table_body = file_reader(args.file)
 
-    print("echo")
-    print(f"head_line: {head_line}")
-    print(f"3 lines: {table_body[:3]}")
-    print(f"There are {len(table_body)} entries.")
-#    input_file = args.file
-#    sort_option = args.reverse  # .true. == start by the least popular cluster
-
-#    # work on old data:
-#    print("Preview, sort by DataWarrior's cluster labels:")
-#    raw_data = access_raw_data(input_file)
-#    headline = read_header(raw_data)
+    # work on old data:
     cluster_label = identify_cluster_column(head_line)
-    print(f"The cluster label is in column {cluster_label}.")
+    #     print(f"The cluster label is in column {cluster_label}.")
 
-#    popularity = read_dw_list(raw_data, special_position)
     print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, cluster_label)
 
-#    sorted_population_list = entry_sorter(popularity, sort_option)
     sorted_population_list = entry_sorter(popularity, args.reverse)
-    print(sorted_population_list)
+    #    print(sorted_population_list)
     report_list = scrutin_by_label(table_body, sorted_population_list,
                                    cluster_label)
     report_file = permanent_report(args.file.name, head_line, report_list)
@@ -210,9 +190,8 @@ def main():
     # work on new data:
     print("\nclusters newly sorted and labeled:")
     raw_data_2 = access_raw_data(report_file)
-#    headline = read_header(raw_data)
-#    special_position = identify_cluster_column(headline)
-    popularity_2 = read_dw_list(raw_data_2, cluster_label) #special_position)
+    read_dw_list(raw_data_2, cluster_label)
+
 
 if __name__ == "__main__":
     main()
