@@ -2,16 +2,22 @@
 
 # name:    datawarrior_clustersort.py
 # author:  nbehrnd@yahoo.com
-# license: GPL v2, 2022.
+# license: GPL v2, 2022, 2023
 # date:    <2022-04-22 Fri>
-# edit:    <2022-04-26 Tue>
+# edit:    <2023-05-27 Sat>
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
+DataWarrior can recognize structure similarity in a set of molecules.  The
+more similar molecules are then grouped in clusters labeled by integers, a
+result DataWarrior can store as .dwar, or export as .sdf file.  However so
+far, the program however does not provide to report the molecules in a sort
+based on the popularity of their corresponding clusters.
 For context and motivation, see DataWarrior's discussion board after mcmc's
 post 'Assign cluster name based on cluster size' by April 7, 2022
 (https://openmolecules.org/forum/index.php?t=msg&th=586&goto=1587&#msg_1587).
 
-The script uses only functions of Python's standard library."""
+The script uses only functions of Python's standard library as checked with
+Python in version 3.11.2."""
 
 import argparse
 import csv
@@ -23,24 +29,43 @@ import sys
 def get_args():
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
-        description=
-        """Sort DataWarrior's cluster list, begin with the most populated.
-        For an input file 'example.txt', a new record 'example_sort.txt'
-        is written DataWarrior may access directly (Ctrl + O).""")
+        description="""Sort DataWarrior's cluster list based on the number of
+        molecules per cluster.  The triage by frequency reports the cluster
+        most populous first.  After processing input file `example.txt`, the
+        newly written record `example_sort.txt` can be accessed directly by
+        DataWarrior by the short cut `Ctrl + O`.""",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
-    parser.add_argument("source_file",
-                        metavar="FILE",
-                        help="DataWarrior's cluster export as .txt file.")
+    parser.add_argument(
+        "file",
+        metavar="file",
+        type=argparse.FileType("rt"),
+        help="DataWarrior's cluster list which was exported as .txt file",
+    )
 
     parser.add_argument(
         "-r",
         "--reverse",
         action="store_false",
-        help="""Override the default; sort in the permanent record starts
-	with the cluster least populated and ends with the cluster containing
-	the most molecules.""")
+        help="""override the default sort sequence; i.e. assign the least
+        populous cluster the lowest label""",
+    )
 
     return parser.parse_args()
+
+
+def file_reader(input_file=""):
+    """access the data as provided by DataWarrior's .txt file
+
+    Assuming DW's file is less than half of the (remaining) available
+    RAM of the computer used, the whole content of input file is read."""
+    raw_table = input_file.read().splitlines()
+
+    head_line = raw_table[0]
+    table_body = raw_table[1:]
+
+    return head_line, table_body
 
 
 def access_raw_data(input_file=""):
@@ -48,21 +73,14 @@ def access_raw_data(input_file=""):
     raw_data = []
 
     try:
-        with open(input_file, encoding="utf-8", mode="r") as source:
+        with open(input_file, encoding="utf-8", mode="rt") as source:
             raw_data = source.readlines()
     except OSError:
         print(f"Input file {input_file} was not accessible.  Exit.")
         sys.exit()
 
-    return raw_data
-
-
-def read_header(raw_data=[]):
-    """Extract the headline of DW's table."""
-    table_header = ""
-    table_header = str(raw_data[0]).strip()
-
-    return table_header
+    table_body_2 = raw_data[1:]
+    return table_body_2
 
 
 def identify_cluster_column(table_header):
@@ -81,15 +99,14 @@ def identify_cluster_column(table_header):
     return column_number
 
 
-def read_dw_list(raw_data, special_position):
+def read_dw_list(raw_data, cluster_label):
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
     source = csv.reader(raw_data, delimiter="\t")
     for row in source:
-        cluster_label_on_molecule = row[special_position]
+        cluster_label_on_molecule = row[cluster_label]
         dw_cluster_labels.append(cluster_label_on_molecule)
-    del dw_cluster_labels[0]  # do not consider the table header
 
     # build and report a dictionary:
     count = {}
@@ -97,14 +114,16 @@ def read_dw_list(raw_data, special_position):
         count.setdefault(label, 0)
         count[label] = count[label] + 1
 
+    #    print("\nDataWarrior's assignment of clusters:")
     for key, value in count.items():
-        print("cluster: ", key, "\t molecules: ", value)
+        print(f"cluster: {key:>8} molecules: {value:>8}")
 
     return count
 
 
-def entry_sorter(count={}, reversed_order=False):
+def entry_sorter(count=None, reversed_order=None):
     """Sort the popularity of the clusters either way."""
+    #     print(f"status reversed_order: {reversed_order}")
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=True)
     else:
@@ -112,20 +131,19 @@ def entry_sorter(count={}, reversed_order=False):
     return sorted_list
 
 
-def scrutin_by_label(raw_data, population_list, special_position):
+def scrutin_by_label(table_body, population_list, old_cluster_label):
     """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
 
     for entry in population_list:
-        source = csv.reader(raw_data, delimiter="\t")
+        source = csv.reader(table_body, delimiter="\t")
 
         for row in source:
-            if row[special_position] == entry:
-
+            if row[old_cluster_label] == entry:
                 cell_entries = row
-                del cell_entries[special_position]
-                cell_entries.insert(special_position, str(new_cluster_label))
+                del cell_entries[old_cluster_label]
+                cell_entries.insert(old_cluster_label, str(new_cluster_label))
                 retain = "\t".join(cell_entries)
                 reporter_list.append(retain)
 
@@ -134,7 +152,7 @@ def scrutin_by_label(raw_data, population_list, special_position):
     return reporter_list
 
 
-def permanent_report(input_file="", topline="", listing=[]):
+def permanent_report(input_file="", topline="", listing=None):
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -154,27 +172,26 @@ def permanent_report(input_file="", topline="", listing=[]):
 def main():
     """Join the functions."""
     args = get_args()
-    input_file = args.source_file
-    sort_option = args.reverse  # .true. == start by the least popular cluster
 
-    # work on old data:
-    print("Preview, sort by DataWarrior's cluster labels:")
-    raw_data = access_raw_data(input_file)
-    headline = read_header(raw_data)
-    special_position = identify_cluster_column(headline)
-    popularity = read_dw_list(raw_data, special_position)
+    # read the old data:
+    head_line, table_body = file_reader(args.file)
+    cluster_label = identify_cluster_column(head_line)
+    #     print(f"The cluster label is in column {cluster_label}.")
 
-    sorted_population_list = entry_sorter(popularity, sort_option)
-    report_list = scrutin_by_label(raw_data, sorted_population_list,
-                                   special_position)
-    report_file = permanent_report(input_file, headline, report_list)
+    print("\nDataWarrior's assignment of clusters:")
+    popularity = read_dw_list(table_body, cluster_label)
 
-    # work on new data:
+    # reorganize the data:
+    sorted_population_list = entry_sorter(popularity, args.reverse)
+    #    print(sorted_population_list)
+    report_list = scrutin_by_label(table_body, sorted_population_list,
+                                   cluster_label)
+    report_file = permanent_report(args.file.name, head_line, report_list)
+
+    # read the new data:
     print("\nclusters newly sorted and labeled:")
-    raw_data = access_raw_data(report_file)
-    headline = read_header(raw_data)
-    special_position = identify_cluster_column(headline)
-    popularity = read_dw_list(raw_data, special_position)
+    raw_data_2 = access_raw_data(report_file)
+    read_dw_list(raw_data_2, cluster_label)
 
 
 if __name__ == "__main__":
