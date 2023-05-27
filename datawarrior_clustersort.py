@@ -2,9 +2,9 @@
 
 # name:    datawarrior_clustersort.py
 # author:  nbehrnd@yahoo.com
-# license: GPL v2, 2022.
+# license: GPL v2, 2022, 2023
 # date:    <2022-04-22 Fri>
-# edit:    <2023-05-26 Fri>
+# edit:    <2023-05-27 Sat>
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -16,7 +16,8 @@ For context and motivation, see DataWarrior's discussion board after mcmc's
 post 'Assign cluster name based on cluster size' by April 7, 2022
 (https://openmolecules.org/forum/index.php?t=msg&th=586&goto=1587&#msg_1587).
 
-The script uses only functions of Python's standard library."""
+The script uses only functions of Python's standard library as checked with
+Python in version 3.11.2."""
 
 import argparse
 import csv
@@ -120,7 +121,7 @@ def read_dw_list(raw_data, cluster_label):
     return count
 
 
-def entry_sorter(count={}, reversed_order=None):
+def entry_sorter(count=None, reversed_order=None):
     """Sort the popularity of the clusters either way."""
     #     print(f"status reversed_order: {reversed_order}")
     if reversed_order:
@@ -151,7 +152,7 @@ def scrutin_by_label(table_body, population_list, old_cluster_label):
     return reporter_list
 
 
-def permanent_report(input_file="", topline="", listing=[]):
+def permanent_report(input_file="", topline="", listing=None):
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -172,22 +173,22 @@ def main():
     """Join the functions."""
     args = get_args()
 
+    # read the old data:
     head_line, table_body = file_reader(args.file)
-
-    # work on old data:
     cluster_label = identify_cluster_column(head_line)
     #     print(f"The cluster label is in column {cluster_label}.")
 
     print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, cluster_label)
 
+    # reorganize the data:
     sorted_population_list = entry_sorter(popularity, args.reverse)
     #    print(sorted_population_list)
     report_list = scrutin_by_label(table_body, sorted_population_list,
                                    cluster_label)
     report_file = permanent_report(args.file.name, head_line, report_list)
 
-    # work on new data:
+    # read the new data:
     print("\nclusters newly sorted and labeled:")
     raw_data_2 = access_raw_data(report_file)
     read_dw_list(raw_data_2, cluster_label)
