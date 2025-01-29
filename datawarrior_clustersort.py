@@ -3,8 +3,8 @@
 # name:    datawarrior_clustersort.py
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
-# date:    <2022-04-22 Fri>
-# edit:    <2023-05-27 Sat>
+# date:    [2022-04-22 Fri]
+# edit:    [2025-01-29 Wed]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
