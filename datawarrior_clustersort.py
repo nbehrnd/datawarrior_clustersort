@@ -91,8 +91,7 @@ def identify_cluster_column(table_header):
     an explicit separator (tabulator)."""
     column_heads = table_header.split("\t")
     list_of_matches = [
-        i for i, item in enumerate(column_heads)
-        if re.search("Cluster No", item)
+        i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
     ]
     column_number = int(list_of_matches[0])
 
@@ -184,8 +183,7 @@ def main():
     # reorganize the data:
     sorted_population_list = entry_sorter(popularity, args.reverse)
     #    print(sorted_population_list)
-    report_list = scrutin_by_label(table_body, sorted_population_list,
-                                   cluster_label)
+    report_list = scrutin_by_label(table_body, sorted_population_list, cluster_label)
     report_file = permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
