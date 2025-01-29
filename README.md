@@ -1,3 +1,5 @@
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+
 # context/motivation
 
 By the post [Assign cluster name based on cluster
@@ -81,20 +83,23 @@ by the short cut `Ctrl + O`.
 # content of the project
 
 ``` shell
-tree
+tree -a -L2 -I .git
 ```
 
-``` bash
+``` shell
 .
 ├── datawarrior_clustersort.py
+├── .gitignore
 ├── LICENSE
+├── .pre-commit-config.yaml
 ├── README.html
 ├── README.md
 ├── README.org
+├── requirements-dev.txt
 └── test_data
     ├── 100Random_Molecules.dwar
     ├── 100Random_Molecules_sort.txt
     └── 100Random_Molecules.txt
 
-2 directories, 8 files
+2 directories, 11 files
 ```
