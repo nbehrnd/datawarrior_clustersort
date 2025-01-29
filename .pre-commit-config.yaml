@@ -1,0 +1,22 @@
+# date: [2025-01-29 Wed]
+#
+# In contrast to the check by code reformater Black, the setup of this
+# git-precommit hook does not prevent a Python script to enter the commit
+# history if flake8 identifies an issue (`--exit-zero`).  These require
+# dependencies met (see `requirements-dev.txt`) and subsequent activation
+# `pre-commit install) to update the local folder `.git/hooks/`.
+# By the command of `pre-commit run --all-files`, launches the checks
+# independently of the commit history.  It equally is possible to bypass
+# the checks altogether by `git commit -m "commit message" --no-verify`.
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args:
+          - --exit-zero
