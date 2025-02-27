@@ -57,7 +57,7 @@ def get_args():
     parser.add_argument(
         "-r",
         "--reverse",
-        action="store_false",
+        action="store_true",
         help="""override the default sort sequence; i.e. assign the least
         populous cluster the lowest label""",
     )
@@ -131,12 +131,11 @@ def read_dw_list(raw_data, cluster_label):
 
 
 def entry_sorter(count=None, reversed_order=None):
-    """Sort the popularity of the clusters either way."""
-    #     print(f"status reversed_order: {reversed_order}")
+    """sort the popularity of the clusters either way."""
     if reversed_order:
-        sorted_list = sorted(count, key=count.__getitem__, reverse=True)
-    else:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
+    else:
+        sorted_list = sorted(count, key=count.__getitem__, reverse=True)
     return sorted_list
 
 
