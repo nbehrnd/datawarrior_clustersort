@@ -137,7 +137,7 @@ def read_dw_list(raw_data, cluster_label):
     return count
 
 
-def entry_sorter(count=None, reversed_order=None):
+def cluster_sorter(count=None, reversed_order=None):
     """sort the popularity of the clusters either way."""
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
@@ -146,7 +146,7 @@ def entry_sorter(count=None, reversed_order=None):
     return sorted_list
 
 
-def scrutin_by_label(table_body, population_list, old_cluster_label):
+def update_cluster_labels(table_body, population_list, old_cluster_label):
     """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
@@ -200,9 +200,10 @@ def main():
     popularity = read_dw_list(table_body, cluster_label)
 
     # reorganize the data:
-    sorted_population_list = entry_sorter(popularity, args.reverse)
-    #    print(sorted_population_list)
-    report_list = scrutin_by_label(table_body, sorted_population_list, cluster_label)
+    sorted_population_list = cluster_sorter(popularity, args.reverse)
+    report_list = update_cluster_labels(
+        table_body, sorted_population_list, cluster_label
+    )
     report_file = permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
