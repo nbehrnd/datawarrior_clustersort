@@ -70,12 +70,19 @@ def file_reader(input_file=""):
 
     Assuming DW's file is less than half of the (remaining) available
     RAM of the computer used, the whole content of input file is read."""
-    raw_table = input_file.read().splitlines()
-
-    head_line = raw_table[0]
-    table_body = raw_table[1:]
-
-    return head_line, table_body
+    try:
+        raw_table = input_file.read().splitlines()
+        raw_table = [i.strip() for i in raw_table if len(i) > 1]
+        if len(raw_table) < 3:
+            logging.error(
+                "Only %s non-empty line(s) instead of 3 in the input file.",
+                len(raw_table),
+            )
+            sys.exit(1)
+        return raw_table
+    except OSError as e:
+        print(f"Error while reading {input_file.name}: {e}")
+        sys.exit(1)
 
 
 def access_raw_data(input_file=""):
@@ -182,7 +189,10 @@ def main():
     args = get_args()
 
     # read the old data:
-    head_line, table_body = file_reader(args.file)
+    raw_table = file_reader(args.file)
+    head_line = raw_table[0]
+    table_body = raw_table[1:]
+
     cluster_label = identify_cluster_column(head_line)
     #     print(f"The cluster label is in column {cluster_label}.")
 
