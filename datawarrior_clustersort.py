@@ -4,7 +4,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-01-29 Wed]
+# edit:    [2025-02-27 Thu]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -21,9 +21,19 @@ Python in version 3.11.2."""
 
 import argparse
 import csv
+import logging
 import os
 import re
 import sys
+
+
+# Configure logging
+logging.basicConfig(
+    level=logging.ERROR,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[logging.FileHandler("error.log"), logging.StreamHandler(sys.stderr)],
+)
 
 
 def get_args():
