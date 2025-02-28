@@ -4,7 +4,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-02-27 Thu]
+# edit:    [2025-02-28 Fri]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -65,7 +65,7 @@ def get_args():
     return parser.parse_args()
 
 
-def file_reader(input_file=""):
+def file_reader(input_file):
     """access the data as provided by DataWarrior's .txt file
 
     Assuming DW's file is less than half of the (remaining) available
@@ -83,21 +83,6 @@ def file_reader(input_file=""):
     except OSError as e:
         print(f"Error while reading {input_file.name}: {e}")
         sys.exit(1)
-
-
-def access_raw_data(input_file=""):
-    """Access DW's exported cluster list."""
-    raw_data = []
-
-    try:
-        with open(input_file, encoding="utf-8", mode="rt") as source:
-            raw_data = source.readlines()
-    except OSError:
-        print(f"Input file {input_file} was not accessible.  Exit.")
-        sys.exit()
-
-    table_body_2 = raw_data[1:]
-    return table_body_2
 
 
 def identify_cluster_column(table_header):
@@ -167,7 +152,7 @@ def update_cluster_labels(table_body, population_list, old_cluster_label):
     return reporter_list
 
 
-def permanent_report(input_file="", topline="", listing=None):
+def permanent_report(input_file, topline, listing=None):
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -194,8 +179,6 @@ def main():
     table_body = raw_table[1:]
 
     cluster_label = identify_cluster_column(head_line)
-    #     print(f"The cluster label is in column {cluster_label}.")
-
     print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, cluster_label)
 
@@ -204,12 +187,11 @@ def main():
     report_list = update_cluster_labels(
         table_body, sorted_population_list, cluster_label
     )
-    report_file = permanent_report(args.file.name, head_line, report_list)
+    permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
     print("\nclusters newly sorted and labeled:")
-    raw_data_2 = access_raw_data(report_file)
-    read_dw_list(raw_data_2, cluster_label)
+    read_dw_list(report_list, cluster_label)
 
 
 if __name__ == "__main__":
