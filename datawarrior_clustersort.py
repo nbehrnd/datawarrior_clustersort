@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: GPL-2.0-only
 
 # name:    datawarrior_clustersort.py
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-01-29 Wed]
+# edit:    [2025-02-28 Fri]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -21,9 +23,19 @@ Python in version 3.11.2."""
 
 import argparse
 import csv
+import logging
 import os
 import re
 import sys
+
+
+# Configure logging
+logging.basicConfig(
+    level=logging.ERROR,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[logging.FileHandler("error.log"), logging.StreamHandler(sys.stderr)],
+)
 
 
 def get_args():
@@ -47,7 +59,7 @@ def get_args():
     parser.add_argument(
         "-r",
         "--reverse",
-        action="store_false",
+        action="store_true",
         help="""override the default sort sequence; i.e. assign the least
         populous cluster the lowest label""",
     )
@@ -55,32 +67,24 @@ def get_args():
     return parser.parse_args()
 
 
-def file_reader(input_file=""):
+def file_reader(input_file):
     """access the data as provided by DataWarrior's .txt file
 
     Assuming DW's file is less than half of the (remaining) available
     RAM of the computer used, the whole content of input file is read."""
-    raw_table = input_file.read().splitlines()
-
-    head_line = raw_table[0]
-    table_body = raw_table[1:]
-
-    return head_line, table_body
-
-
-def access_raw_data(input_file=""):
-    """Access DW's exported cluster list."""
-    raw_data = []
-
     try:
-        with open(input_file, encoding="utf-8", mode="rt") as source:
-            raw_data = source.readlines()
-    except OSError:
-        print(f"Input file {input_file} was not accessible.  Exit.")
-        sys.exit()
-
-    table_body_2 = raw_data[1:]
-    return table_body_2
+        raw_table = input_file.read().splitlines()
+        raw_table = [i.strip() for i in raw_table if len(i) > 1]
+        if len(raw_table) < 3:
+            logging.error(
+                "Only %s non-empty line(s) instead of 3 in the input file.",
+                len(raw_table),
+            )
+            sys.exit(1)
+        return raw_table
+    except OSError as e:
+        logging.error("Error while reading %s: %s", input_file.name, e)
+        sys.exit(1)
 
 
 def identify_cluster_column(table_header):
@@ -120,17 +124,16 @@ def read_dw_list(raw_data, cluster_label):
     return count
 
 
-def entry_sorter(count=None, reversed_order=None):
-    """Sort the popularity of the clusters either way."""
-    #     print(f"status reversed_order: {reversed_order}")
+def cluster_sorter(count=None, reversed_order=None):
+    """sort the popularity of the clusters either way."""
     if reversed_order:
-        sorted_list = sorted(count, key=count.__getitem__, reverse=True)
-    else:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
+    else:
+        sorted_list = sorted(count, key=count.__getitem__, reverse=True)
     return sorted_list
 
 
-def scrutin_by_label(table_body, population_list, old_cluster_label):
+def update_cluster_labels(table_body, population_list, old_cluster_label):
     """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
@@ -151,7 +154,7 @@ def scrutin_by_label(table_body, population_list, old_cluster_label):
     return reporter_list
 
 
-def permanent_report(input_file="", topline="", listing=None):
+def permanent_report(input_file, topline, listing=None):
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -161,8 +164,8 @@ def permanent_report(input_file="", topline="", listing=None):
             newfile.write("".join([topline, "\n"]))
             for entry in listing:
                 newfile.write("".join([entry, "\n"]))
-    except OSError:
-        print(f"Error to export record into {report_file}.  Exit.")
+    except OSError as e:
+        logging.error("Error to export record into %s (%s).  Exit.", report_file, e)
         sys.exit()
 
     return report_file
@@ -173,23 +176,24 @@ def main():
     args = get_args()
 
     # read the old data:
-    head_line, table_body = file_reader(args.file)
-    cluster_label = identify_cluster_column(head_line)
-    #     print(f"The cluster label is in column {cluster_label}.")
+    raw_table = file_reader(args.file)
+    head_line = raw_table[0]
+    table_body = raw_table[1:]
 
+    cluster_label = identify_cluster_column(head_line)
     print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, cluster_label)
 
     # reorganize the data:
-    sorted_population_list = entry_sorter(popularity, args.reverse)
-    #    print(sorted_population_list)
-    report_list = scrutin_by_label(table_body, sorted_population_list, cluster_label)
-    report_file = permanent_report(args.file.name, head_line, report_list)
+    sorted_population_list = cluster_sorter(popularity, args.reverse)
+    report_list = update_cluster_labels(
+        table_body, sorted_population_list, cluster_label
+    )
+    permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
     print("\nclusters newly sorted and labeled:")
-    raw_data_2 = access_raw_data(report_file)
-    read_dw_list(raw_data_2, cluster_label)
+    read_dw_list(report_list, cluster_label)
 
 
 if __name__ == "__main__":
