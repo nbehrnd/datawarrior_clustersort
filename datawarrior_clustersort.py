@@ -81,7 +81,7 @@ def file_reader(input_file):
             sys.exit(1)
         return raw_table
     except OSError as e:
-        print(f"Error while reading {input_file.name}: {e}")
+        logging.error("Error while reading %s: %s", input_file.name, e)
         sys.exit(1)
 
 
@@ -162,8 +162,8 @@ def permanent_report(input_file, topline, listing=None):
             newfile.write("".join([topline, "\n"]))
             for entry in listing:
                 newfile.write("".join([entry, "\n"]))
-    except OSError:
-        print(f"Error to export record into {report_file}.  Exit.")
+    except OSError as e:
+        logging.error("Error to export record into %s (%s).  Exit.", report_file, e)
         sys.exit()
 
     return report_file
