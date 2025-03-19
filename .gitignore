@@ -1,3 +1,5 @@
 # .gitignore file for project datawarrior_clustersort
 *.html~
 *.org~
+error.log
+tests/__pycache__/

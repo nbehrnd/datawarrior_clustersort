@@ -1,0 +1,7 @@
+<macro name="record_number">
+<task name="addCalculatedValues">
+isOverwrite=false
+formula=row()
+columnName=record_number
+</task>
+</macro>
