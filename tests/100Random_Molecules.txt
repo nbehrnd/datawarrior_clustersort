@@ -1,101 +1,101 @@
-Structure [idcode]	Cluster No	Is Representative
-edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No
-elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No
-elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No
-eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No
-fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No
-fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No
-ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No
-edVRF@@NO@n`LbikoldTRRVfbTTQbLRbrLvEGDcgcPrqu@a@DDEAEUUT@pOH@	6	Yes
-fbuQ`@OA@aRSJkJ}vygQRuUAACUB@@	2	No
-fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No
-fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	3	No
-fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	3	No
-fmw@R@BMflDPdsJvkON~kLD[r\pPPP@DEUL@@@	3	No
-fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	4	No
-fc@p@@HYi^|bfbbtRabTRRRV`eAcehymAAD@@EES@P@@	5	Yes
-fde`B@M@bDfYYUUgIFuZ@@Bai``P|`	7	No
-fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No
-ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes
-e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No
-eg`PJH@OJfck`JsHhhhhldeDedid\hpHiYeu@A@TDpUCTp@BGct`	5	No
-eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	4	No
-fekap@L@PqVkSRYV_mmUYWzMjfiifZ@B@H]AP	2	No
-eg`PAH@AODbjack`ICHhhhheEddbhjddhhyXEduT@PDDUMUTpLDD@@	2	No
-fc@P@@H{oHheEDdeMKDleEljq`yJN[TCAIMUAAIA@L@@	3	No
-fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No
-fcw`r@BJMdm^`bLbbbRfbbvrTQTrSINCA@aTDTuMT@HLP	2	No
-eghXL@@B`DCDfyWYgeUgUg`SJj[YXyh@Ij``rjj`V@ZPRP	3	No
-ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes
-eo`XFL@CEMGDnc`H`bPXBLbbbfbdzfbbtRVRVxDJj`bBVfB@jij@BAZ@	3	No
-fmwa`@O@QWHiihhhhdeEcMHgQ|GKVfhFHdjjjJQQIP@	4	No
-eg`\B@@JFE`DIFlbfTRTQRbRffbfRtVSPqusSUMT@PuA`D@PXH	2	No
-ebZPAH@NAOHckd\PHcHhheDbeDeMdhdlhcEhqHYYA@p@ULmTtttp@XIVR}@	3	No
-fcg@H@@HhGIZkrJYSQQIQISSQEE]fuMKUU@tDTPTd\aP	4	No
-eo`\ID@JMOHDLEHbckg`@cXHrRRqIZYQQQJGYIJS`QJiZfiijZZjiYP@@	2	No
-fi{aPDC@QjkSSdTtTRbafRRfbhiFmGKPDEUTsMPrNQR@@	4	No
-fmoa`@O@twIEDhXeEDdmeeeBTUYtTyjT@HBbjfjAAAl@	3	No
-ehZPF@@@DNODglbbTTTQbRQfRRRRbftLbrJjFfN~Z`X`JBJ@Jjh@dEem@@	4	No
-ed\PMD@BGOBackgo`XPHaXHrJJIKYJJKJJJJFJFQLBS[PPQUKTCEDLm@A@Y@	2	No
-flyA`@@R|dsJjzkkNPDEUUU@@@	5	No
-fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No
-el^TL@@CI`Gd\bbbRTVbfRTLLRbfVfDt\brZfVN~ZB@BBbh@@JJ```|`@	7	No
-fleA`@@HbdvjlrsmgARuUPDETH@@	5	No
-eodXD@@L@OLdTrbbRbTRbcbLJdtB\jJzFfjh@@BH@@Jj@HHD@@	9	Yes
-fe{Qb@K]tNXHaIfUYnWWuXQoIiB@H`hfm`@aEf@	3	No
-fasQR@AQUipZ`bLbbbbbaQVfRTsIFm@QPuTuUPpJ`@	2	No
-fmwIpDB\EHB@mGMYIrJYQQSIJFJZI[SbcVRUjZijBBJei@@@	2	No
-foaH@F@PjJQkn}InUV[UYWY_`yZZZXHJJiff@HplP	2	No
-feg@R@NBmdDQdTTRbUbbRbRVVYKtVc``X```hH`@@@	3	No
-fmoh@@@PijvRJIQYJJYKIIHiDhiw`u[MPPSEPHUR@BFX	10	Yes
-eohPF@@@DFKLkdfye^yn]WUVDT|bjzZBB@```bij@@`VP	3	No
-ek`PJ@@@DI@hlbfbbTTLRLJbbTQDLtlFfvNZhFBJj`HJhGCBFSr@@	3	No
-fkoAr@AQSVZ}`BLdTRRRrTrTQTtTTqSdjABJjijffZHZdJp	4	No
-fm{aJ@FdyJsdeflDadTTVbRVbJRTrRcAPPQUMUSUL@@@	2	No
-figP`@LI@aIeYYV]}U]N}GI^cZhHB@bh@@@@@	2	No
-fcg@h@@HxkQoIKoHiiDehiUDhihTmM[USSUUTp@PSDdgHL@@	1	No
-el\PCH@Dlbjfemckg`TPI@hRDaHQDaDQHQHRDaHRAaDzLbFfjfBhafhfZfQCANIBBx`	4	Yes
-fasQ`@LJ@anQQIYQQQKJSRhwf}Zj``hjfd`@@	2	No
-fegPR@LA``WPAFRREQQKJIQKJJOUlcKUZ`XHJPjbA@@	2	No
-fakAR@FQrwhICHhhhhhXhmLdysRkNSUU@qEQTsFHQDq@@	4	No
-edRXF@@D`DNMc`\bbTTRtVQbbRttTRNReaSSwsTC@qPPIPLAP@BBdT`	3	No
-e`\XJD@Khdbjf`HcRHrJJIQQIIEQJDjJIQL\RVGOW_P@@UESSTADHD@@@	3	Yes
-ehTPMH@BGDlfaecko`PHcHhhmEeDhhihdXYicFN@jhHBhJBZJYff@@@	3	No
-edZXAH@ICKHlbemo`HcHhdheDheKECCDhdUEQqhEL\CC@@TCTLpPLA@@@@@	3	No
-ehTXN@@L@DFFnailbbRbtRRTvbbbbbcQl|~AZihHHjjY`h@HHh@@	1	No
-fbeIa@AV\Eb\`bBRFQQQSQ[JHiSdhHbIjjX@@	2	No
-fcg`H@C@PsK^kwdTRTVRTRTRbQQTBUjfj``jJjX@@	2	No
-fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No
-fleQ`@DX@[vQQIQJIJHkZmEKUADHP@@@@	2	No
-fi{qP@EQRAEVcrJIRJVIJKZYJDsk^cejjBBJiihX@@	2	No
-ehR\N@@MKD`D@hgo`\bfbbTTtrbRcbTQbTDTRrFfvnZ@bJfZ`HJjXQPxRt@@	3	No
-fmw`R@BAJNXICHhheEhihlehcifRt[KXHJIXJAbZH@@	1	No
-figa`@K@xeJUVWvWUe\DEKp^ciZjjfj`@eHT`@	1	No
-eohXEH@@bCDljfaikg`HcHhhdhXeEhikLideFIMCOHhHJ@bHZZZib@@@	2	Yes
-fgap@E`QqNRwrJIQQQYKYIPjIJ[ZmO[TCDIUSPAE@BFd	3	No
-fn}`r@LPPJtT`BLddJbbbraTqTMyZ`XbbZZ@@@	2	No
-fe{aH@H`PxJ\eGOHihheEDhhYlUhHvoM@@PTLuTp@@@	3	No
-fmwq`@DXr@R\bbRbbVbfVbaRRtzIQkZhF@BB```BGh@	2	No
-fcwQQ@FJHZwm`bNrFQQQQJiSJYJIJHkdfc`bHiif@Hj@D@p	2	No
-fmwh`@BRUZXDYEMDhhhhXhXcEdyLZcVuSUALDAAdBLJd@@	4	No
-fmkIH@DX]TCMFmxluyEDeEhhhi\eElhuSULsUMTtNP@	1	No
-fn}aP@F`PIUlbfbbbbtRrfjLEj`ZBXjkHXP@	4	No
-edRPAL@LAEHckgo`HajHfBLbTRbbbebTRVTQRdTYcaWVpMU@tDEPLDBtPBBDl`@	3	No
-eoh\N@@GIg`DFMLmclbfbbtRVbRTRaTtRDdl|n^ZB@HHjjjefBPBRT@@	3	No
-fbe`b@IQRCDrJIJIQIJESZ}MHTEQM@DPbP	3	No
-fkqP@LN|ACBmrJIJJZIJISEHjIJtPyv]jf@@HHf`@@@@	2	No
-fkAQ@IAGOXIADadTfbbbRRtQRrtrfoVcUmT@PADDAML@@@	3	No
-fasab@CDDdDQdTTRTtLTRRTIYItXHJ@`hij@@@	7	Yes
-fly`R@ADdYHIAIf]VyvV\``JjZj@PL`	6	No
-fjmAa@CV\BHKHYEEDdmEEEKds`TpDCTtsTHD\`p	3	No
-fegPR@BL[t\pUfQQQQJIIUQKIQSbaRtZBHhjjjifE`z@@	2	No
-fig@b@BuAbYEDeMDeDemMBeSbcV}GLtmTtPPuTHcbe@@	3	No
-ff}@P@@TTWIEMEMiCDelerTTtDDUMUME@R`f@	4	No
-ffcQ`@M^@cbSKLoNJjl{qZmPLDeP@B@@@	2	No
-fmg`r@HlSdmQ`bLbbbbbbqbRbbMfyIUh@`BbjYjZBFd@	1	No
-fduA@@@ILrsszkARtZpXuA@@@A@P``@	11	Yes
-e`RXJ@@I@DFiodfvUmUYVy]}QECK@dbnmcfh@@@@@hHBX@@HKd	5	No
-edRXAH@NiDlbik`XPJsHdhheDmDhhddTdcBhIhEULmLDCAHSQUMMLD@a@vP	3	No
-fmg`p@A`QrPUiLlsO~wJ{NkUZu@tDMP@SPP|dV^h	3	No
-fcwaP@E`Qv^|bbRbTRTRRrRVLvkEZuPQDTQDTt@@@	2	No
-edRXNH@CGJieo`XPHcHhheEheldheEEDl]DqHhYt]AAHuUPTDtTrP@@@	3	No
+Structure [idcode]	Cluster No	Is Representative	record_number
+edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
+fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6
+ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No	7
+edVRF@@NO@n`LbikoldTRRVfbTTQbLRbrLvEGDcgcPrqu@a@DDEAEUUT@pOH@	6	Yes	8
+fbuQ`@OA@aRSJkJ}vygQRuUAACUB@@	2	No	9
+fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	3	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	3	No	12
+fmw@R@BMflDPdsJvkON~kLD[r\pPPP@DEUL@@@	3	No	13
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	4	No	14
+fc@p@@HYi^|bfbbtRabTRRRV`eAcehymAAD@@EES@P@@	5	Yes	15
+fde`B@M@bDfYYUUgIFuZ@@Bai``P|`	7	No	16
+fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No	17
+ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes	18
+e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No	19
+eg`PJH@OJfck`JsHhhhhldeDedid\hpHiYeu@A@TDpUCTp@BGct`	5	No	20
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	4	No	21
+fekap@L@PqVkSRYV_mmUYWzMjfiifZ@B@H]AP	2	No	22
+eg`PAH@AODbjack`ICHhhhheEddbhjddhhyXEduT@PDDUMUTpLDD@@	2	No	23
+fc@P@@H{oHheEDdeMKDleEljq`yJN[TCAIMUAAIA@L@@	3	No	24
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No	25
+fcw`r@BJMdm^`bLbbbRfbbvrTQTrSINCA@aTDTuMT@HLP	2	No	26
+eghXL@@B`DCDfyWYgeUgUg`SJj[YXyh@Ij``rjj`V@ZPRP	3	No	27
+ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28
+eo`XFL@CEMGDnc`H`bPXBLbbbfbdzfbbtRVRVxDJj`bBVfB@jij@BAZ@	3	No	29
+fmwa`@O@QWHiihhhhdeEcMHgQ|GKVfhFHdjjjJQQIP@	4	No	30
+eg`\B@@JFE`DIFlbfTRTQRbRffbfRtVSPqusSUMT@PuA`D@PXH	2	No	31
+ebZPAH@NAOHckd\PHcHhheDbeDeMdhdlhcEhqHYYA@p@ULmTtttp@XIVR}@	3	No	32
+fcg@H@@HhGIZkrJYSQQIQISSQEE]fuMKUU@tDTPTd\aP	4	No	33
+eo`\ID@JMOHDLEHbckg`@cXHrRRqIZYQQQJGYIJS`QJiZfiijZZjiYP@@	2	No	34
+fi{aPDC@QjkSSdTtTRbafRRfbhiFmGKPDEUTsMPrNQR@@	4	No	35
+fmoa`@O@twIEDhXeEDdmeeeBTUYtTyjT@HBbjfjAAAl@	3	No	36
+ehZPF@@@DNODglbbTTTQbRQfRRRRbftLbrJjFfN~Z`X`JBJ@Jjh@dEem@@	4	No	37
+ed\PMD@BGOBackgo`XPHaXHrJJIKYJJKJJJJFJFQLBS[PPQUKTCEDLm@A@Y@	2	No	38
+flyA`@@R|dsJjzkkNPDEUUU@@@	5	No	39
+fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40
+el^TL@@CI`Gd\bbbRTVbfRTLLRbfVfDt\brZfVN~ZB@BBbh@@JJ```|`@	7	No	41
+fleA`@@HbdvjlrsmgARuUPDETH@@	5	No	42
+eodXD@@L@OLdTrbbRbTRbcbLJdtB\jJzFfjh@@BH@@Jj@HHD@@	9	Yes	43
+fe{Qb@K]tNXHaIfUYnWWuXQoIiB@H`hfm`@aEf@	3	No	44
+fasQR@AQUipZ`bLbbbbbaQVfRTsIFm@QPuTuUPpJ`@	2	No	45
+fmwIpDB\EHB@mGMYIrJYQQSIJFJZI[SbcVRUjZijBBJei@@@	2	No	46
+foaH@F@PjJQkn}InUV[UYWY_`yZZZXHJJiff@HplP	2	No	47
+feg@R@NBmdDQdTTRbUbbRbRVVYKtVc``X```hH`@@@	3	No	48
+fmoh@@@PijvRJIQYJJYKIIHiDhiw`u[MPPSEPHUR@BFX	10	Yes	49
+eohPF@@@DFKLkdfye^yn]WUVDT|bjzZBB@```bij@@`VP	3	No	50
+ek`PJ@@@DI@hlbfbbTTLRLJbbTQDLtlFfvNZhFBJj`HJhGCBFSr@@	3	No	51
+fkoAr@AQSVZ}`BLdTRRRrTrTQTtTTqSdjABJjijffZHZdJp	4	No	52
+fm{aJ@FdyJsdeflDadTTVbRVbJRTrRcAPPQUMUSUL@@@	2	No	53
+figP`@LI@aIeYYV]}U]N}GI^cZhHB@bh@@@@@	2	No	54
+fcg@h@@HxkQoIKoHiiDehiUDhihTmM[USSUUTp@PSDdgHL@@	1	No	55
+el\PCH@Dlbjfemckg`TPI@hRDaHQDaDQHQHRDaHRAaDzLbFfjfBhafhfZfQCANIBBx`	4	Yes	56
+fasQ`@LJ@anQQIYQQQKJSRhwf}Zj``hjfd`@@	2	No	57
+fegPR@LA``WPAFRREQQKJIQKJJOUlcKUZ`XHJPjbA@@	2	No	58
+fakAR@FQrwhICHhhhhhXhmLdysRkNSUU@qEQTsFHQDq@@	4	No	59
+edRXF@@D`DNMc`\bbTTRtVQbbRttTRNReaSSwsTC@qPPIPLAP@BBdT`	3	No	60
+e`\XJD@Khdbjf`HcRHrJJIQQIIEQJDjJIQL\RVGOW_P@@UESSTADHD@@@	3	Yes	61
+ehTPMH@BGDlfaecko`PHcHhhmEeDhhihdXYicFN@jhHBhJBZJYff@@@	3	No	62
+edZXAH@ICKHlbemo`HcHhdheDheKECCDhdUEQqhEL\CC@@TCTLpPLA@@@@@	3	No	63
+ehTXN@@L@DFFnailbbRbtRRTvbbbbbcQl|~AZihHHjjY`h@HHh@@	1	No	64
+fbeIa@AV\Eb\`bBRFQQQSQ[JHiSdhHbIjjX@@	2	No	65
+fcg`H@C@PsK^kwdTRTVRTRTRbQQTBUjfj``jJjX@@	2	No	66
+fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No	67
+fleQ`@DX@[vQQIQJIJHkZmEKUADHP@@@@	2	No	68
+fi{qP@EQRAEVcrJIRJVIJKZYJDsk^cejjBBJiihX@@	2	No	69
+ehR\N@@MKD`D@hgo`\bfbbTTtrbRcbTQbTDTRrFfvnZ@bJfZ`HJjXQPxRt@@	3	No	70
+fmw`R@BAJNXICHhheEhihlehcifRt[KXHJIXJAbZH@@	1	No	71
+figa`@K@xeJUVWvWUe\DEKp^ciZjjfj`@eHT`@	1	No	72
+eohXEH@@bCDljfaikg`HcHhhdhXeEhikLideFIMCOHhHJ@bHZZZib@@@	2	Yes	73
+fgap@E`QqNRwrJIQQQYKYIPjIJ[ZmO[TCDIUSPAE@BFd	3	No	74
+fn}`r@LPPJtT`BLddJbbbraTqTMyZ`XbbZZ@@@	2	No	75
+fe{aH@H`PxJ\eGOHihheEDhhYlUhHvoM@@PTLuTp@@@	3	No	76
+fmwq`@DXr@R\bbRbbVbfVbaRRtzIQkZhF@BB```BGh@	2	No	77
+fcwQQ@FJHZwm`bNrFQQQQJiSJYJIJHkdfc`bHiif@Hj@D@p	2	No	78
+fmwh`@BRUZXDYEMDhhhhXhXcEdyLZcVuSUALDAAdBLJd@@	4	No	79
+fmkIH@DX]TCMFmxluyEDeEhhhi\eElhuSULsUMTtNP@	1	No	80
+fn}aP@F`PIUlbfbbbbtRrfjLEj`ZBXjkHXP@	4	No	81
+edRPAL@LAEHckgo`HajHfBLbTRbbbebTRVTQRdTYcaWVpMU@tDEPLDBtPBBDl`@	3	No	82
+eoh\N@@GIg`DFMLmclbfbbtRVbRTRaTtRDdl|n^ZB@HHjjjefBPBRT@@	3	No	83
+fbe`b@IQRCDrJIJIQIJESZ}MHTEQM@DPbP	3	No	84
+fkqP@LN|ACBmrJIJJZIJISEHjIJtPyv]jf@@HHf`@@@@	2	No	85
+fkAQ@IAGOXIADadTfbbbRRtQRrtrfoVcUmT@PADDAML@@@	3	No	86
+fasab@CDDdDQdTTRTtLTRRTIYItXHJ@`hij@@@	7	Yes	87
+fly`R@ADdYHIAIf]VyvV\``JjZj@PL`	6	No	88
+fjmAa@CV\BHKHYEEDdmEEEKds`TpDCTtsTHD\`p	3	No	89
+fegPR@BL[t\pUfQQQQJIIUQKIQSbaRtZBHhjjjifE`z@@	2	No	90
+fig@b@BuAbYEDeMDeDemMBeSbcV}GLtmTtPPuTHcbe@@	3	No	91
+ff}@P@@TTWIEMEMiCDelerTTtDDUMUME@R`f@	4	No	92
+ffcQ`@M^@cbSKLoNJjl{qZmPLDeP@B@@@	2	No	93
+fmg`r@HlSdmQ`bLbbbbbbqbRbbMfyIUh@`BbjYjZBFd@	1	No	94
+fduA@@@ILrsszkARtZpXuA@@@A@P``@	11	Yes	95
+e`RXJ@@I@DFiodfvUmUYVy]}QECK@dbnmcfh@@@@@hHBX@@HKd	5	No	96
+edRXAH@NiDlbik`XPJsHdhheDmDhhddTdcBhIhEULmLDCAHSQUMMLD@a@vP	3	No	97
+fmg`p@A`QrPUiLlsO~wJ{NkUZu@tDMP@SPP|dV^h	3	No	98
+fcwaP@E`Qv^|bbRbTRTRRrRVLvkEZuPQDTQDTt@@@	2	No	99
+edRXNH@CGJieo`XPHcHhheEheldheEEDl]DqHhYt]AAHuUPTDtTrP@@@	3	No	100
