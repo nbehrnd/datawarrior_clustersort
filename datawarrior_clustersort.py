@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-02-28 Fri]
+# edit:    [2025-03-25 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -27,7 +27,7 @@ import logging
 import os
 import re
 import sys
-
+from typing import List, Tuple, Dict, TextIO
 
 # Configure logging
 logging.basicConfig(
@@ -38,7 +38,7 @@ logging.basicConfig(
 )
 
 
-def get_args():
+def get_args() -> argparse.Namespace:
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
@@ -67,11 +67,8 @@ def get_args():
     return parser.parse_args()
 
 
-def file_reader(input_file):
-    """access the data as provided by DataWarrior's .txt file
-
-    Assuming DW's file is less than half of the (remaining) available
-    RAM of the computer used, the whole content of input file is read."""
+def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
+    """access the data as provided by DataWarrior's .txt file"""
     try:
         raw_table = input_file.read().splitlines()
         raw_table = [i.strip() for i in raw_table if len(i) > 1]
@@ -81,38 +78,43 @@ def file_reader(input_file):
                 len(raw_table),
             )
             sys.exit(1)
-        return raw_table
+
+        head_line = raw_table[0]
+        table_body = raw_table[1:]
+        old_cluster_label = identify_cluster_column(head_line)
+
+        return head_line, table_body, old_cluster_label
     except OSError as e:
         logging.error("Error while reading %s: %s", input_file.name, e)
         sys.exit(1)
 
 
-def identify_cluster_column(table_header):
+def identify_cluster_column(head_line: str) -> int:
     """Identify the column with DW's assigned cluster labels.
 
     The first occurrence of 'Cluster No' identified by a regular expression is
     assumed to indicate the column of interest.  For this, the split has to be
     an explicit separator (tabulator)."""
-    column_heads = table_header.split("\t")
+    column_heads = head_line.split("\t")
     list_of_matches = [
         i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
     ]
-    column_number = int(list_of_matches[0])
+    old_cluster_label = int(list_of_matches[0])
 
-    return column_number
+    return old_cluster_label
 
 
-def read_dw_list(raw_data, cluster_label):
+def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int]:
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
-    source = csv.reader(raw_data, delimiter="\t")
+    source = csv.reader(table_body, delimiter="\t")
     for row in source:
-        cluster_label_on_molecule = row[cluster_label]
+        cluster_label_on_molecule = row[old_cluster_label]
         dw_cluster_labels.append(cluster_label_on_molecule)
 
     # build and report a dictionary:
-    count = {}
+    count: Dict[str, int] = {}
     for label in dw_cluster_labels:
         count.setdefault(label, 0)
         count[label] = count[label] + 1
@@ -124,37 +126,57 @@ def read_dw_list(raw_data, cluster_label):
     return count
 
 
-def cluster_sorter(count=None, reversed_order=None):
-    """sort the popularity of the clusters either way."""
+def label_sorter(
+    count: Dict[str, int], reversed_order: bool) -> Dict[str, int]:
+    """relate DW assigned cluster labels with new ones to be used
+
+    First sort the old cluster labels by number of molecules per
+    cluster (i.e., by popularity).  Then assign how old labels by
+    DW are going to be updated."""
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
     else:
         sorted_list = sorted(count, key=count.__getitem__, reverse=True)
-    return sorted_list
+
+    # create the dictionary by dictionary comprehension, `+ 1`accounts
+    # for Python's zero-based indexing
+    label_dictionary = {
+        old_label: new_label + 1 for new_label, old_label in enumerate(sorted_list)
+    }
+
+    return label_dictionary
 
 
-def update_cluster_labels(table_body, population_list, old_cluster_label):
-    """Update the molecules' labels according to the cluster popularity."""
+def update_cluster_labels(
+    table_body: List[str], old_cluster_label: int, label_dictionary: Dict[str, int]
+) -> List[str]:
+    """update the molecules' labels according to the cluster popularity"""
     reporter_list = []
-    new_cluster_label = 1
 
-    for entry in population_list:
-        source = csv.reader(table_body, delimiter="\t")
+    for record in table_body:
+        record_data = []
+        record_data = record.split("\t")
 
-        for row in source:
-            if row[old_cluster_label] == entry:
-                cell_entries = row
-                del cell_entries[old_cluster_label]
-                cell_entries.insert(old_cluster_label, str(new_cluster_label))
-                retain = "\t".join(cell_entries)
-                reporter_list.append(retain)
+        old_label = record_data[old_cluster_label]
+        new_label = label_dictionary.get(old_label)
 
-        new_cluster_label += 1
+        # update of the cluster label
+        record_data[old_cluster_label] = str(new_label)
+
+        new_record = "\t".join(record_data)
+        reporter_list.append(new_record)
+
+    reporter_list = sorted(reporter_list, key=sort_by_cluster_label)
 
     return reporter_list
 
 
-def permanent_report(input_file, topline, listing=None):
+def sort_by_cluster_label(s: str) -> int:
+    """provide a key to sort records e.g., in `table_body` by cluster label"""
+    return int(s.split("\t")[1])
+
+
+def permanent_report(input_file: str, topline: str, listing: List[str]) -> str:
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -171,29 +193,22 @@ def permanent_report(input_file, topline, listing=None):
     return report_file
 
 
-def main():
+def main() -> None:
     """Join the functions."""
     args = get_args()
+    head_line, table_body, old_cluster_label = file_reader(args.file)
 
-    # read the old data:
-    raw_table = file_reader(args.file)
-    head_line = raw_table[0]
-    table_body = raw_table[1:]
-
-    cluster_label = identify_cluster_column(head_line)
     print("\nDataWarrior's assignment of clusters:")
-    popularity = read_dw_list(table_body, cluster_label)
+    popularity = read_dw_list(table_body, old_cluster_label)
 
     # reorganize the data:
-    sorted_population_list = cluster_sorter(popularity, args.reverse)
-    report_list = update_cluster_labels(
-        table_body, sorted_population_list, cluster_label
-    )
+    label_dictionary = label_sorter(popularity, args.reverse)
+    report_list = update_cluster_labels(table_body, old_cluster_label, label_dictionary)
     permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
     print("\nclusters newly sorted and labeled:")
-    read_dw_list(report_list, cluster_label)
+    read_dw_list(report_list, old_cluster_label)
 
 
 if __name__ == "__main__":
