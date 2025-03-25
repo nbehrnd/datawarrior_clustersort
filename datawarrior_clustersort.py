@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-02-28 Fri]
+# edit:    [2025-03-25 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -81,34 +81,39 @@ def file_reader(input_file):
                 len(raw_table),
             )
             sys.exit(1)
-        return raw_table
+
+        head_line = raw_table[0]
+        table_body = raw_table[1:]
+        old_cluster_label = identify_cluster_column(head_line)
+
+        return head_line, table_body, old_cluster_label
     except OSError as e:
         logging.error("Error while reading %s: %s", input_file.name, e)
         sys.exit(1)
 
 
-def identify_cluster_column(table_header):
+def identify_cluster_column(head_line):
     """Identify the column with DW's assigned cluster labels.
 
     The first occurrence of 'Cluster No' identified by a regular expression is
     assumed to indicate the column of interest.  For this, the split has to be
     an explicit separator (tabulator)."""
-    column_heads = table_header.split("\t")
+    column_heads = head_line.split("\t")
     list_of_matches = [
         i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
     ]
-    column_number = int(list_of_matches[0])
+    old_cluster_label = int(list_of_matches[0])
 
-    return column_number
+    return old_cluster_label
 
 
-def read_dw_list(raw_data, cluster_label):
+def read_dw_list(table_body, old_cluster_label):
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
-    source = csv.reader(raw_data, delimiter="\t")
+    source = csv.reader(table_body, delimiter="\t")
     for row in source:
-        cluster_label_on_molecule = row[cluster_label]
+        cluster_label_on_molecule = row[old_cluster_label]
         dw_cluster_labels.append(cluster_label_on_molecule)
 
     # build and report a dictionary:
@@ -174,26 +179,21 @@ def permanent_report(input_file, topline, listing=None):
 def main():
     """Join the functions."""
     args = get_args()
+    head_line, table_body, old_cluster_label = file_reader(args.file)
 
-    # read the old data:
-    raw_table = file_reader(args.file)
-    head_line = raw_table[0]
-    table_body = raw_table[1:]
-
-    cluster_label = identify_cluster_column(head_line)
     print("\nDataWarrior's assignment of clusters:")
-    popularity = read_dw_list(table_body, cluster_label)
+    popularity = read_dw_list(table_body, old_cluster_label)
 
     # reorganize the data:
     sorted_population_list = cluster_sorter(popularity, args.reverse)
     report_list = update_cluster_labels(
-        table_body, sorted_population_list, cluster_label
+        table_body, sorted_population_list, old_cluster_label
     )
     permanent_report(args.file.name, head_line, report_list)
 
     # read the new data:
     print("\nclusters newly sorted and labeled:")
-    read_dw_list(report_list, cluster_label)
+    read_dw_list(report_list, old_cluster_label)
 
 
 if __name__ == "__main__":
