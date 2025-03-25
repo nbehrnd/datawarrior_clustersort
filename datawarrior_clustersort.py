@@ -127,8 +127,7 @@ def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int
 
 
 def label_sorter(
-    count: Dict[str, int], reversed_order: bool
-) -> Tuple[List[str], Dict[str, int]]:
+    count: Dict[str, int], reversed_order: bool) -> Dict[str, int]:
     """relate DW assigned cluster labels with new ones to be used
 
     First sort the old cluster labels by number of molecules per
@@ -145,7 +144,7 @@ def label_sorter(
         old_label: new_label + 1 for new_label, old_label in enumerate(sorted_list)
     }
 
-    return sorted_list, label_dictionary
+    return label_dictionary
 
 
 def update_cluster_labels(
@@ -167,7 +166,14 @@ def update_cluster_labels(
         new_record = "\t".join(record_data)
         reporter_list.append(new_record)
 
+    reporter_list = sorted(reporter_list, key=sort_by_cluster_label)
+
     return reporter_list
+
+
+def sort_by_cluster_label(s: str) -> int:
+    """provide a key to sort records e.g., in `table_body` by cluster label"""
+    return int(s.split("\t")[1])
 
 
 def permanent_report(input_file: str, topline: str, listing: List[str]) -> str:
@@ -196,16 +202,13 @@ def main() -> None:
     popularity = read_dw_list(table_body, old_cluster_label)
 
     # reorganize the data:
-    sorted_population_list, label_dictionary = label_sorter(popularity, args.reverse)
-
+    label_dictionary = label_sorter(popularity, args.reverse)
     report_list = update_cluster_labels(table_body, old_cluster_label, label_dictionary)
+    permanent_report(args.file.name, head_line, report_list)
 
-
-#    permanent_report(args.file.name, head_line, report_list)
-
-#    # read the new data:
-#    print("\nclusters newly sorted and labeled:")
-#    read_dw_list(report_list, old_cluster_label)
+    # read the new data:
+    print("\nclusters newly sorted and labeled:")
+    read_dw_list(report_list, old_cluster_label)
 
 
 if __name__ == "__main__":
