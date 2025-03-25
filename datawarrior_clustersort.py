@@ -149,22 +149,23 @@ def label_sorter(
 
 
 def update_cluster_labels(
-    table_body: List[str], population_list: List[str], old_cluster_label: int
+    table_body: List[str], old_cluster_label: int, label_dictionary: Dict[str, int]
 ) -> List[str]:
-    """Update the molecules' labels according to the cluster popularity."""
+    """update the molecules' labels according to the cluster popularity"""
     reporter_list = []
-    new_cluster_label = 1
 
-    for entry in population_list:
-        for row in csv.reader(table_body, delimiter="\t"):
-            if row[old_cluster_label] == entry:
-                cell_entries = row
-                del cell_entries[old_cluster_label]
-                cell_entries.insert(old_cluster_label, str(new_cluster_label))
-                retain = "\t".join(cell_entries)
-                reporter_list.append(retain)
+    for record in table_body:
+        record_data = []
+        record_data = record.split("\t")
 
-        new_cluster_label += 1
+        old_label = record_data[old_cluster_label]
+        new_label = label_dictionary.get(old_label)
+
+        # update of the cluster label
+        record_data[old_cluster_label] = str(new_label)
+
+        new_record = "\t".join(record_data)
+        reporter_list.append(new_record)
 
     return reporter_list
 
@@ -197,10 +198,9 @@ def main() -> None:
     # reorganize the data:
     sorted_population_list, label_dictionary = label_sorter(popularity, args.reverse)
 
+    report_list = update_cluster_labels(table_body, old_cluster_label, label_dictionary)
 
-#    report_list = update_cluster_labels(
-#        table_body, sorted_population_list, old_cluster_label
-#    )
+
 #    permanent_report(args.file.name, head_line, report_list)
 
 #    # read the new data:
