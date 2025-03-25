@@ -27,7 +27,7 @@ import logging
 import os
 import re
 import sys
-
+from typing import List, Tuple, Dict, TextIO
 
 # Configure logging
 logging.basicConfig(
@@ -38,7 +38,7 @@ logging.basicConfig(
 )
 
 
-def get_args():
+def get_args() -> argparse.Namespace:
     """Get the arguments from the command line."""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
@@ -67,11 +67,8 @@ def get_args():
     return parser.parse_args()
 
 
-def file_reader(input_file):
-    """access the data as provided by DataWarrior's .txt file
-
-    Assuming DW's file is less than half of the (remaining) available
-    RAM of the computer used, the whole content of input file is read."""
+def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
+    """access the data as provided by DataWarrior's .txt file"""
     try:
         raw_table = input_file.read().splitlines()
         raw_table = [i.strip() for i in raw_table if len(i) > 1]
@@ -92,7 +89,7 @@ def file_reader(input_file):
         sys.exit(1)
 
 
-def identify_cluster_column(head_line):
+def identify_cluster_column(head_line: str) -> int:
     """Identify the column with DW's assigned cluster labels.
 
     The first occurrence of 'Cluster No' identified by a regular expression is
@@ -107,7 +104,7 @@ def identify_cluster_column(head_line):
     return old_cluster_label
 
 
-def read_dw_list(table_body, old_cluster_label):
+def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int]:
     """Establish a frequency list based on DW's exported cluster list."""
     dw_cluster_labels = []
 
@@ -117,7 +114,7 @@ def read_dw_list(table_body, old_cluster_label):
         dw_cluster_labels.append(cluster_label_on_molecule)
 
     # build and report a dictionary:
-    count = {}
+    count: Dict[str, int] = {}
     for label in dw_cluster_labels:
         count.setdefault(label, 0)
         count[label] = count[label] + 1
@@ -129,8 +126,8 @@ def read_dw_list(table_body, old_cluster_label):
     return count
 
 
-def cluster_sorter(count=None, reversed_order=None):
-    """sort the popularity of the clusters either way."""
+def cluster_sorter(count: Dict[str, int], reversed_order: bool) -> List[str]:
+    """Sort the popularity of the clusters either way."""
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
     else:
@@ -138,15 +135,15 @@ def cluster_sorter(count=None, reversed_order=None):
     return sorted_list
 
 
-def update_cluster_labels(table_body, population_list, old_cluster_label):
+def update_cluster_labels(
+    table_body: List[str], population_list: List[str], old_cluster_label: int
+) -> List[str]:
     """Update the molecules' labels according to the cluster popularity."""
     reporter_list = []
     new_cluster_label = 1
 
     for entry in population_list:
-        source = csv.reader(table_body, delimiter="\t")
-
-        for row in source:
+        for row in csv.reader(table_body, delimiter="\t"):
             if row[old_cluster_label] == entry:
                 cell_entries = row
                 del cell_entries[old_cluster_label]
@@ -159,7 +156,7 @@ def update_cluster_labels(table_body, population_list, old_cluster_label):
     return reporter_list
 
 
-def permanent_report(input_file, topline, listing=None):
+def permanent_report(input_file: str, topline: str, listing: List[str]) -> str:
     """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
@@ -176,7 +173,7 @@ def permanent_report(input_file, topline, listing=None):
     return report_file
 
 
-def main():
+def main() -> None:
     """Join the functions."""
     args = get_args()
     head_line, table_body, old_cluster_label = file_reader(args.file)
