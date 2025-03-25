@@ -126,13 +126,26 @@ def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int
     return count
 
 
-def cluster_sorter(count: Dict[str, int], reversed_order: bool) -> List[str]:
-    """Sort the popularity of the clusters either way."""
+def label_sorter(
+    count: Dict[str, int], reversed_order: bool
+) -> Tuple[List[str], Dict[str, int]]:
+    """relate DW assigned cluster labels with new ones to be used
+
+    First sort the old cluster labels by number of molecules per
+    cluster (i.e., by popularity).  Then assign how old labels by
+    DW are going to be updated."""
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
     else:
         sorted_list = sorted(count, key=count.__getitem__, reverse=True)
-    return sorted_list
+
+    # create the dictionary by dictionary comprehension, `+ 1`accounts
+    # for Python's zero-based indexing
+    label_dictionary = {
+        old_label: new_label + 1 for new_label, old_label in enumerate(sorted_list)
+    }
+
+    return sorted_list, label_dictionary
 
 
 def update_cluster_labels(
@@ -182,15 +195,17 @@ def main() -> None:
     popularity = read_dw_list(table_body, old_cluster_label)
 
     # reorganize the data:
-    sorted_population_list = cluster_sorter(popularity, args.reverse)
-    report_list = update_cluster_labels(
-        table_body, sorted_population_list, old_cluster_label
-    )
-    permanent_report(args.file.name, head_line, report_list)
+    sorted_population_list, label_dictionary = label_sorter(popularity, args.reverse)
 
-    # read the new data:
-    print("\nclusters newly sorted and labeled:")
-    read_dw_list(report_list, old_cluster_label)
+
+#    report_list = update_cluster_labels(
+#        table_body, sorted_population_list, old_cluster_label
+#    )
+#    permanent_report(args.file.name, head_line, report_list)
+
+#    # read the new data:
+#    print("\nclusters newly sorted and labeled:")
+#    read_dw_list(report_list, old_cluster_label)
 
 
 if __name__ == "__main__":
