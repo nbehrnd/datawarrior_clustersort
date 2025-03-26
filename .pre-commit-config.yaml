@@ -28,6 +28,7 @@ repos:
       - id: flake8
         name: "flake8 (advisory only, it does not block a commit)"
         args:
+          - --max-line-length=90
           - --show-source
           - --statistics
           - --count
