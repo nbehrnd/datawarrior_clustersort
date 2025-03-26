@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-03-25 Tue]
+# edit:    [2025-03-26 Wed]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -18,8 +18,8 @@ For context and motivation, see DataWarrior's discussion board after mcmc's
 post 'Assign cluster name based on cluster size' by April 7, 2022
 (https://openmolecules.org/forum/index.php?t=msg&th=586&goto=1587&#msg_1587).
 
-The script uses only functions of Python's standard library as checked with
-Python in version 3.11.2."""
+The script uses only functions of the standard library, for instance of
+Python version 3.11.2."""
 
 import argparse
 import csv
@@ -39,7 +39,7 @@ logging.basicConfig(
 
 
 def get_args() -> argparse.Namespace:
-    """Get the arguments from the command line."""
+    """collect the arguments from the command line"""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
         molecules per cluster.  The triage by frequency reports the cluster
@@ -68,7 +68,14 @@ def get_args() -> argparse.Namespace:
 
 
 def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
-    """access the data as provided by DataWarrior's .txt file"""
+    """
+    access the data as provided by DataWarrior's .txt file
+
+    :param input_file: DataWarrior's exported .txt list of clusters
+    :type input_file: TextIO
+    :return: table header, table body, and column of cluster labels
+    :rtype: Tuple[str, List[str], int]
+    """
     try:
         raw_table = input_file.read().splitlines()
         raw_table = [i.strip() for i in raw_table if len(i) > 1]
@@ -90,11 +97,15 @@ def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
 
 
 def identify_cluster_column(head_line: str) -> int:
-    """Identify the column with DW's assigned cluster labels.
+    """
+    identify the column with DW's assigned cluster labels
 
-    The first occurrence of 'Cluster No' identified by a regular expression is
-    assumed to indicate the column of interest.  For this, the split has to be
-    an explicit separator (tabulator)."""
+    The first occurrence of 'Cluster No' identified by a regular
+    expression is assumed to indicate the column of interest.
+
+    :return: index of the column of cluster labels
+    :rtype: int
+    """
     column_heads = head_line.split("\t")
     list_of_matches = [
         i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
@@ -105,7 +116,19 @@ def identify_cluster_column(head_line: str) -> int:
 
 
 def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int]:
-    """Establish a frequency list based on DW's exported cluster list."""
+    """
+    query current cluster labels' popularity
+
+    Query currently assigned cluster labels DataWarrior assigned,
+    and how many molecules each represents.
+
+    :param table_body: the data table except its head line
+    :type table_body: List[str]
+    :param old_cluster_label: data table's column of cluster labels
+    :type old_cluster_label: int
+    :return: dictionary of cluster labels (key) and popularity (value)
+    :rtype: Dict[str, int]
+    """
     dw_cluster_labels = []
 
     source = csv.reader(table_body, delimiter="\t")
@@ -126,13 +149,21 @@ def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int
     return count
 
 
-def label_sorter(
-    count: Dict[str, int], reversed_order: bool) -> Dict[str, int]:
-    """relate DW assigned cluster labels with new ones to be used
+def label_sorter(count: Dict[str, int], reversed_order: bool) -> Dict[str, int]:
+    """
+    relate DW assigned cluster labels with the new ones to be used
 
     First sort the old cluster labels by number of molecules per
     cluster (i.e., by popularity).  Then assign how old labels by
-    DW are going to be updated."""
+    DW are going to be updated
+
+    :param count: dictionary (k = cluster label, v = times it is used)
+    :type count: Dict[str, int]
+    :param reversed_order: sort either by as/descending popularity
+    :type reversed_order: bool
+    :return: sorted cluster dictionary (k = old DW, v = new label)
+    :rtype: Dict[str, int]
+    """
     if reversed_order:
         sorted_list = sorted(count, key=count.__getitem__, reverse=False)
     else:
@@ -150,7 +181,22 @@ def label_sorter(
 def update_cluster_labels(
     table_body: List[str], old_cluster_label: int, label_dictionary: Dict[str, int]
 ) -> List[str]:
-    """update the molecules' labels according to the cluster popularity"""
+    """
+    update the molecules' labels by cluster popularity
+
+    With the dictionary which relates original cluster labels
+    (assigned by DataWarrior) and the new ones (based on cluster
+    popularity and sort), each molecule's record is updated.
+
+    :param table_body: data table except head line
+    :type table_body: List[str]
+    :param old_cluster_label: DataWarrior cluster label (prior to sort)
+    :type old_cluster_label: int
+    :param label_dictionary: dictionary (k = old DW, v = new label)
+    :type label_dictionary: Dict[str, int]
+    :return: body of table (no head line) with updated cluster labels
+    :rtype: List[str]
+    """
     reporter_list = []
 
     for record in table_body:
@@ -172,18 +218,29 @@ def update_cluster_labels(
 
 
 def sort_by_cluster_label(s: str) -> int:
-    """provide a key to sort records e.g., in `table_body` by cluster label"""
+    """return a key to sort records in `table_body` by cluster label"""
     return int(s.split("\t")[1])
 
 
-def permanent_report(input_file: str, topline: str, listing: List[str]) -> str:
-    """Provide a permanent record DW may access."""
+def permanent_report(input_file: str, head_line: str, listing: List[str]) -> str:
+    """
+    provide a permanent record DW may access
+
+    :param input_file: file name of the input file
+    :type input_file: str
+    :param head_line: head line of the data table
+    :type head_line: str
+    :param listing: data table except head line
+    :type listing: List[str]
+    :return: complete data table (head line and table body)
+    :rtype: str
+    """ """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
 
     try:
         with open(report_file, encoding="utf-8", mode="w") as newfile:
-            newfile.write("".join([topline, "\n"]))
+            newfile.write("".join([head_line, "\n"]))
             for entry in listing:
                 newfile.write("".join([entry, "\n"]))
     except OSError as e:
@@ -194,7 +251,7 @@ def permanent_report(input_file: str, topline: str, listing: List[str]) -> str:
 
 
 def main() -> None:
-    """Join the functions."""
+    """join the functions"""
     args = get_args()
     head_line, table_body, old_cluster_label = file_reader(args.file)
 
