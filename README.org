@@ -5,7 +5,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022.
 # date:    [2022-04-22 Fri]
-# edit:    [2025-01-29 Wed]
+# edit:    [2025-03-26 Wed]
 
 #+begin_export html
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
@@ -90,28 +90,3 @@ cluster:       11 molecules:        1
   A running instance of DataWarrior was able to read the newly written
   file ~100Random_Molecules_sort.txt~ both by ~File -> Open~, as well
   as by the short cut ~Ctrl + O~.
-  
-* content of the project
-
-  #+begin_src shell :results code :exports both
-tree -a -L2 -I .git
-  #+end_src
-
-  #+RESULTS:
-  #+begin_src shell
-  .
-  ├── datawarrior_clustersort.py
-  ├── .gitignore
-  ├── LICENSE
-  ├── .pre-commit-config.yaml
-  ├── README.html
-  ├── README.md
-  ├── README.org
-  ├── requirements-dev.txt
-  └── test_data
-      ├── 100Random_Molecules.dwar
-      ├── 100Random_Molecules_sort.txt
-      └── 100Random_Molecules.txt
-
-  2 directories, 11 files
-  #+end_src
