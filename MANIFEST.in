@@ -1,3 +1,4 @@
-include docs/README.rst
+# include docs/README.rst
+include docs/README.md
 include tests/*.txt
 include tests/*.dwar

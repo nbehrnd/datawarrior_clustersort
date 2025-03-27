@@ -38,5 +38,5 @@ datawarrior_clustersort = "datawarrior_clustersort:main"
 where = ["."]
 
 [tool.setuptools.package-data]
-"datawarrior_clustersort" = ["docs/README.rst", "tests/*.txt", "tests/*.dwar"]
+"datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
 
