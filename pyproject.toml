@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# the sequence of entries below follows the example on
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+# as visited on [2025-03-27 Thu]
+
+[project]
+name = "datawarrior_clustersort"
+version = "0.1.0"
+dependencies = []  # None (it works with Python's standard library alone)
+requires-python = ">=3.10"
+authors = [
+    { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
+]
+description = "reassign DW cluster labels by their popularity"
+readme = "docs/README.rst"
+
+license-files = ["LICENSE"]
+keywords = ["datawarrior", "cluster"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
+
+[project.scripts]
+datawarrior_clustersort = "datawarrior_clustersort:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
+
