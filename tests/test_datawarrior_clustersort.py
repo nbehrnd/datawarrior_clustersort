@@ -24,7 +24,7 @@ import subprocess
 
 import pytest
 
-from datawarrior_clustersort import file_reader, identify_cluster_column
+from datawarrior_clustersort import file_reader, identify_cluster_column, read_dw_list
 
 PRG = "datawarrior_clustersort/__init__.py"
 INPUT_FILE = "100Random_Molecules.txt"
@@ -142,3 +142,27 @@ def test_identify_cluster_column():
     expected_column = 1
     test_column = identify_cluster_column(input_string)
     assert test_column == expected_column, "wrong column index"
+
+
+@pytest.mark.imported
+def test_read_dw_list():
+    # some records of DW cluster 1, 5, and 8 of `100Random_Molecules.txt`
+    mock_table_body = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No	7",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No	17",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes	18",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No	19",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No	67",
+    ]
+    old_cluster_label = 1
+    expected_dictionary = {
+        "1": 4,
+        "5": 3,
+        "8": 2,
+    }
+    test_dictionary = read_dw_list(mock_table_body, old_cluster_label)
+    assert test_dictionary == expected_dictionary
