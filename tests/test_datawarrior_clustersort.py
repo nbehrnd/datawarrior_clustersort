@@ -180,3 +180,12 @@ def test_label_sorter_default_sort():
     expected_dictionary = {"1": 1, "5": 2, "8": 3}
     test_dictionary = label_sorter(mock_dictionary, reversed_order)
     assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_label_sorter_reverse_sort():
+    mock_dictionary = {"1": 4, "5": 3, "8": 2}
+    reversed_order = True
+    expected_dictionary = {"1": 3, "5": 2, "8": 1}
+    test_dictionary = label_sorter(mock_dictionary, reversed_order)
+    assert test_dictionary == expected_dictionary
