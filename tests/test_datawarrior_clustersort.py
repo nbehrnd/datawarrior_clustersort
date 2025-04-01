@@ -29,6 +29,7 @@ from datawarrior_clustersort import (
     identify_cluster_column,
     read_dw_list,
     label_sorter,
+    update_cluster_labels,
 )
 
 PRG = "datawarrior_clustersort/__init__.py"
@@ -189,3 +190,36 @@ def test_label_sorter_reverse_sort():
     expected_dictionary = {"1": 3, "5": 2, "8": 1}
     test_dictionary = label_sorter(mock_dictionary, reversed_order)
     assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_update_cluster_labels():
+    # some of DW clusters 1, 5, and 8
+    mock_table_body = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No	7",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No	17",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes	18",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No	19",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No	67",
+    ]
+    old_cluster_label = 1
+    label_dictionary = {"1": 1, "5": 2, "8": 3}
+    expected_reporter_list = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	2	No	7",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	2	No	17",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	2	No	19",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	3	Yes	18",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	3	No	67",
+    ]
+    test_reporter_list = update_cluster_labels(
+        mock_table_body, old_cluster_label, label_dictionary
+    )
+    assert test_reporter_list == expected_reporter_list
