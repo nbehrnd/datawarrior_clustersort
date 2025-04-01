@@ -24,7 +24,12 @@ import subprocess
 
 import pytest
 
-from datawarrior_clustersort import file_reader, identify_cluster_column, read_dw_list
+from datawarrior_clustersort import (
+    file_reader,
+    identify_cluster_column,
+    read_dw_list,
+    label_sorter,
+)
 
 PRG = "datawarrior_clustersort/__init__.py"
 INPUT_FILE = "100Random_Molecules.txt"
@@ -165,4 +170,13 @@ def test_read_dw_list():
         "8": 2,
     }
     test_dictionary = read_dw_list(mock_table_body, old_cluster_label)
+    assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_label_sorter_default_sort():
+    mock_dictionary = {"1": 4, "5": 3, "8": 2}
+    reversed_order = False
+    expected_dictionary = {"1": 1, "5": 2, "8": 3}
+    test_dictionary = label_sorter(mock_dictionary, reversed_order)
     assert test_dictionary == expected_dictionary
