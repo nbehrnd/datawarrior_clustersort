@@ -30,6 +30,7 @@ from datawarrior_clustersort import (
     read_dw_list,
     label_sorter,
     update_cluster_labels,
+    permanent_report,
 )
 
 PRG = "datawarrior_clustersort/__init__.py"
@@ -223,3 +224,29 @@ def test_update_cluster_labels():
         mock_table_body, old_cluster_label, label_dictionary
     )
     assert test_reporter_list == expected_reporter_list
+
+
+@pytest.mark.imported
+def test_permanent_report(tmp_path):
+    # prepare data to write
+    input_file = "test_input.txt"
+    head_line = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    listing = [
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	3	Yes	18",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	3	No	67",
+    ]
+
+    # simulate a temporary input file
+    input_file_path = tmp_path / input_file
+    input_file_path.write_text("\n".join([head_line] + listing))
+
+    report_file = permanent_report(str(input_file_path), head_line, listing)
+
+    # probe output file
+    output_file_path = tmp_path / report_file
+    assert output_file_path.exists(), "creation output file failed"
+
+    expected_content = "\n".join([head_line] + listing) + "\n"
+    assert (
+        output_file_path.read_text() == expected_content
+    ), "incorrect content in output file"
