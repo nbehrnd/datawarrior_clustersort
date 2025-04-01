@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-03-27 Thu]
+# edit:    [2025-04-01 Tue]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -26,7 +26,6 @@ import pytest
 
 from datawarrior_clustersort import file_reader
 
-
 PRG = "datawarrior_clustersort/__init__.py"
 INPUT_FILE = "100Random_Molecules.txt"
 OUTPUT_FILE = "100Random_Molecules_sort.txt"
@@ -42,6 +41,7 @@ def test_script_exists():
 # section of black-box tests (the inner working doesn't matter):
 
 
+@pytest.mark.blackbox
 def test_get_test_data():
     """get a copy of the test's input data"""
     source = os.path.join("tests", INPUT_FILE)
@@ -59,6 +59,7 @@ def test_get_test_data():
         print(f"failed to copy '{INPUT_FILE}' for the test; {e}")
 
 
+@pytest.mark.blackbox
 def test_default_sort():
     """check the results of the normal sort"""
     if os.path.exists(OUTPUT_FILE):
@@ -79,6 +80,7 @@ def test_default_sort():
         print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
 
 
+@pytest.mark.blackbox
 def test_reverse_sort():
     """check the results of the normal sort"""
     if os.path.exists(OUTPUT_FILE):
@@ -99,6 +101,7 @@ def test_reverse_sort():
         print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
 
 
+@pytest.mark.blackbox
 def test_space_cleaning():
     """remove copy of the input file"""
     if os.path.exists(INPUT_FILE):
@@ -111,17 +114,13 @@ def test_space_cleaning():
 # section of tests to check the inner of the python script:
 
 
-probe_data = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+@pytest.mark.imported
+def test_file_reader():
+    probe_data = r"""Structure [idcode]	Cluster No	Is Representative	record_number
 edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1
 elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
 elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
-eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
-fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
-fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6
 """
-
-
-def test_file_reader():
     mock_file = io.StringIO(probe_data)
     head_line, table_body, old_cluster_label = file_reader(mock_file)
     assert (
@@ -131,9 +130,6 @@ def test_file_reader():
         r"edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1",
         r"elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2",
         r"elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3",
-        r"eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4",
-        r"fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5",
-        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
     ]
     # implicitly test function `identify_cluster_column`:
     assert old_cluster_label == 1
