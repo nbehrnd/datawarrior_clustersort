@@ -24,7 +24,7 @@ import subprocess
 
 import pytest
 
-from datawarrior_clustersort import file_reader
+from datawarrior_clustersort import file_reader, identify_cluster_column
 
 PRG = "datawarrior_clustersort/__init__.py"
 INPUT_FILE = "100Random_Molecules.txt"
@@ -133,3 +133,12 @@ elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
     ]
     # implicitly test function `identify_cluster_column`:
     assert old_cluster_label == 1
+
+
+@pytest.mark.imported
+def test_identify_cluster_column():
+    """identification of the cluster column"""
+    input_string = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    expected_column = 1
+    test_column = identify_cluster_column(input_string)
+    assert test_column == expected_column, "wrong column index"
