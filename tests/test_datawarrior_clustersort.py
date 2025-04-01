@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-03-27 Thu]
+# edit:    [2025-04-01 Tue]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -24,8 +24,14 @@ import subprocess
 
 import pytest
 
-from datawarrior_clustersort import file_reader
-
+from datawarrior_clustersort import (
+    file_reader,
+    identify_cluster_column,
+    read_dw_list,
+    label_sorter,
+    update_cluster_labels,
+    permanent_report,
+)
 
 PRG = "datawarrior_clustersort/__init__.py"
 INPUT_FILE = "100Random_Molecules.txt"
@@ -42,6 +48,7 @@ def test_script_exists():
 # section of black-box tests (the inner working doesn't matter):
 
 
+@pytest.mark.blackbox
 def test_get_test_data():
     """get a copy of the test's input data"""
     source = os.path.join("tests", INPUT_FILE)
@@ -59,6 +66,7 @@ def test_get_test_data():
         print(f"failed to copy '{INPUT_FILE}' for the test; {e}")
 
 
+@pytest.mark.blackbox
 def test_default_sort():
     """check the results of the normal sort"""
     if os.path.exists(OUTPUT_FILE):
@@ -79,6 +87,7 @@ def test_default_sort():
         print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
 
 
+@pytest.mark.blackbox
 def test_reverse_sort():
     """check the results of the normal sort"""
     if os.path.exists(OUTPUT_FILE):
@@ -99,6 +108,7 @@ def test_reverse_sort():
         print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
 
 
+@pytest.mark.blackbox
 def test_space_cleaning():
     """remove copy of the input file"""
     if os.path.exists(INPUT_FILE):
@@ -111,17 +121,13 @@ def test_space_cleaning():
 # section of tests to check the inner of the python script:
 
 
-probe_data = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+@pytest.mark.imported
+def test_file_reader():
+    probe_data = r"""Structure [idcode]	Cluster No	Is Representative	record_number
 edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1
 elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
 elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
-eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
-fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
-fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6
 """
-
-
-def test_file_reader():
     mock_file = io.StringIO(probe_data)
     head_line, table_body, old_cluster_label = file_reader(mock_file)
     assert (
@@ -131,9 +137,116 @@ def test_file_reader():
         r"edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1",
         r"elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2",
         r"elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3",
-        r"eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4",
-        r"fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5",
-        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
     ]
     # implicitly test function `identify_cluster_column`:
     assert old_cluster_label == 1
+
+
+@pytest.mark.imported
+def test_identify_cluster_column():
+    """identification of the cluster column"""
+    input_string = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    expected_column = 1
+    test_column = identify_cluster_column(input_string)
+    assert test_column == expected_column, "wrong column index"
+
+
+@pytest.mark.imported
+def test_read_dw_list():
+    # some records of DW cluster 1, 5, and 8 of `100Random_Molecules.txt`
+    mock_table_body = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No	7",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No	17",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes	18",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No	19",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No	67",
+    ]
+    old_cluster_label = 1
+    expected_dictionary = {
+        "1": 4,
+        "5": 3,
+        "8": 2,
+    }
+    test_dictionary = read_dw_list(mock_table_body, old_cluster_label)
+    assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_label_sorter_default_sort():
+    mock_dictionary = {"1": 4, "5": 3, "8": 2}
+    reversed_order = False
+    expected_dictionary = {"1": 1, "5": 2, "8": 3}
+    test_dictionary = label_sorter(mock_dictionary, reversed_order)
+    assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_label_sorter_reverse_sort():
+    mock_dictionary = {"1": 4, "5": 3, "8": 2}
+    reversed_order = True
+    expected_dictionary = {"1": 3, "5": 2, "8": 1}
+    test_dictionary = label_sorter(mock_dictionary, reversed_order)
+    assert test_dictionary == expected_dictionary
+
+
+@pytest.mark.imported
+def test_update_cluster_labels():
+    # some of DW clusters 1, 5, and 8
+    mock_table_body = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	5	No	7",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	5	No	17",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	8	Yes	18",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	5	No	19",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	8	No	67",
+    ]
+    old_cluster_label = 1
+    label_dictionary = {"1": 1, "5": 2, "8": 3}
+    expected_reporter_list = [
+        r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
+        r"fmgq`@BRBAG\bfdrTRfabRaTRRT\vjjjhHHjjGFIqU`@	1	No	10",
+        r"ed\XK@@H`DFC@jfnimgoh\bfbbrRbaaTTTltrfPdegcPP@QCULsMMHPIP@	1	Yes	28",
+        r"fde``@E@PdrrsmkbTYpXmTsUUKMBT@@	1	No	40",
+        r"ek`PLH@Fam`IAIfYf[fUUUWcQQpKjhz@H@@@jBJh@@@@	2	No	7",
+        r"fco@H@@HXKsU{rJZJJZEIIJYJYZRUYu^mAD@AT@QS@@@@	2	No	17",
+        r"e`\TJ@@BF`DDailbfbTRRRRRbabfQVWDfedUVqsP@@PHU@LAT@@PNP	2	No	19",
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	3	Yes	18",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	3	No	67",
+    ]
+    test_reporter_list = update_cluster_labels(
+        mock_table_body, old_cluster_label, label_dictionary
+    )
+    assert test_reporter_list == expected_reporter_list
+
+
+@pytest.mark.imported
+def test_permanent_report(tmp_path):
+    # prepare data to write
+    input_file = "test_input.txt"
+    head_line = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    listing = [
+        r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	3	Yes	18",
+        r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	3	No	67",
+    ]
+
+    # simulate a temporary input file
+    input_file_path = tmp_path / input_file
+    input_file_path.write_text("\n".join([head_line] + listing))
+
+    report_file = permanent_report(str(input_file_path), head_line, listing)
+
+    # probe output file
+    output_file_path = tmp_path / report_file
+    assert output_file_path.exists(), "creation output file failed"
+
+    expected_content = "\n".join([head_line] + listing) + "\n"
+    assert (
+        output_file_path.read_text() == expected_content
+    ), "incorrect content in output file"
