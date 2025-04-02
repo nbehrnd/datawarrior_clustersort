@@ -10,10 +10,8 @@
 
 """pytest script of datawarrior_clustersort.py
 
-Instead of a sequential import of functions of the parental script
-of `datawarrior_clustersort.py`, this pytest based script provides
-a couple of _black box tests_ to check only the results default and
-reverse sort provide.
+Tests from the outside are marked as `blackbox`.  Tests based on
+the import of a function of the main script are marked `imported`.
 """
 
 import filecmp
