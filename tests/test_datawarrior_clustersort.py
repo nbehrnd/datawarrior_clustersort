@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-04-01 Tue]
+# edit:    [2025-04-02 Wed]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -129,9 +129,9 @@ elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
 elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
 """
     mock_file = io.StringIO(probe_data)
-    head_line, table_body, old_cluster_label = file_reader(mock_file)
+    headline, table_body, old_cluster_label = file_reader(mock_file)
     assert (
-        head_line == "Structure [idcode]\tCluster No\tIs Representative\trecord_number"
+        headline == "Structure [idcode]\tCluster No\tIs Representative\trecord_number"
     )
     assert table_body == [
         r"edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1",
@@ -230,7 +230,7 @@ def test_update_cluster_labels():
 def test_permanent_report(tmp_path):
     # prepare data to write
     input_file = "test_input.txt"
-    head_line = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    headline = "Structure [idcode]	Cluster No	Is Representative	record_number"
     listing = [
         r"ffmhP@DLxKpJJKdTRbfLrbbRtsUiZif```ACR@	3	Yes	18",
         r"fasPR@B\XJS`XfQQQIQHqQKQYZIV}iZfhF@@@@HPx`	3	No	67",
@@ -238,15 +238,15 @@ def test_permanent_report(tmp_path):
 
     # simulate a temporary input file
     input_file_path = tmp_path / input_file
-    input_file_path.write_text("\n".join([head_line] + listing))
+    input_file_path.write_text("\n".join([headline] + listing))
 
-    report_file = permanent_report(str(input_file_path), head_line, listing)
+    report_file = permanent_report(str(input_file_path), headline, listing)
 
     # probe output file
     output_file_path = tmp_path / report_file
     assert output_file_path.exists(), "creation output file failed"
 
-    expected_content = "\n".join([head_line] + listing) + "\n"
+    expected_content = "\n".join([headline] + listing) + "\n"
     assert (
         output_file_path.read_text() == expected_content
     ), "incorrect content in output file"
