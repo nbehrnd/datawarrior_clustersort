@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-03-26 Wed]
+# edit:    [2025-04-02 Wed]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -86,17 +86,17 @@ def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
             )
             sys.exit(1)
 
-        head_line = raw_table[0]
+        headline = raw_table[0]
         table_body = raw_table[1:]
-        old_cluster_label = identify_cluster_column(head_line)
+        old_cluster_label = identify_cluster_column(headline)
 
-        return head_line, table_body, old_cluster_label
+        return headline, table_body, old_cluster_label
     except OSError as e:
         logging.error("Error while reading %s: %s", input_file.name, e)
         sys.exit(1)
 
 
-def identify_cluster_column(head_line: str) -> int:
+def identify_cluster_column(headline: str) -> int:
     """
     identify the column with DW's assigned cluster labels
 
@@ -106,7 +106,7 @@ def identify_cluster_column(head_line: str) -> int:
     :return: index of the column of cluster labels
     :rtype: int
     """
-    column_heads = head_line.split("\t")
+    column_heads = headline.split("\t")
     list_of_matches = [
         i for i, item in enumerate(column_heads) if re.search("Cluster No", item)
     ]
@@ -122,7 +122,7 @@ def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int
     Query currently assigned cluster labels DataWarrior assigned,
     and how many molecules each represents.
 
-    :param table_body: the data table except its head line
+    :param table_body: the data table except its headline
     :type table_body: List[str]
     :param old_cluster_label: data table's column of cluster labels
     :type old_cluster_label: int
@@ -188,13 +188,13 @@ def update_cluster_labels(
     (assigned by DataWarrior) and the new ones (based on cluster
     popularity and sort), each molecule's record is updated.
 
-    :param table_body: data table except head line
+    :param table_body: data table except headline
     :type table_body: List[str]
     :param old_cluster_label: DataWarrior cluster label (prior to sort)
     :type old_cluster_label: int
     :param label_dictionary: dictionary (k = old DW, v = new label)
     :type label_dictionary: Dict[str, int]
-    :return: body of table (no head line) with updated cluster labels
+    :return: body of table (no headline) with updated cluster labels
     :rtype: List[str]
     """
     reporter_list = []
@@ -222,17 +222,17 @@ def sort_by_cluster_label(s: str) -> int:
     return int(s.split("\t")[1])
 
 
-def permanent_report(input_file: str, head_line: str, listing: List[str]) -> str:
+def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     """
     provide a permanent record DW may access
 
     :param input_file: file name of the input file
     :type input_file: str
-    :param head_line: head line of the data table
-    :type head_line: str
-    :param listing: data table except head line
+    :param headline: headline of the data table
+    :type headline: str
+    :param listing: data table except headline
     :type listing: List[str]
-    :return: complete data table (head line and table body)
+    :return: complete data table (headline and table body)
     :rtype: str
     """ """Provide a permanent record DW may access."""
     stem_input_file = os.path.splitext(input_file)[0]
@@ -240,7 +240,7 @@ def permanent_report(input_file: str, head_line: str, listing: List[str]) -> str
 
     try:
         with open(report_file, encoding="utf-8", mode="w") as newfile:
-            newfile.write("".join([head_line, "\n"]))
+            newfile.write("".join([headline, "\n"]))
             for entry in listing:
                 newfile.write("".join([entry, "\n"]))
     except OSError as e:
@@ -253,7 +253,7 @@ def permanent_report(input_file: str, head_line: str, listing: List[str]) -> str
 def main() -> None:
     """join the functions"""
     args = get_args()
-    head_line, table_body, old_cluster_label = file_reader(args.file)
+    headline, table_body, old_cluster_label = file_reader(args.file)
 
     print("\nDataWarrior's assignment of clusters:")
     popularity = read_dw_list(table_body, old_cluster_label)
@@ -261,7 +261,7 @@ def main() -> None:
     # reorganize the data:
     label_dictionary = label_sorter(popularity, args.reverse)
     report_list = update_cluster_labels(table_body, old_cluster_label, label_dictionary)
-    permanent_report(args.file.name, head_line, report_list)
+    permanent_report(args.file.name, headline, report_list)
 
     # read the new data:
     print("\nclusters newly sorted and labeled:")

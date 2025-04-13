@@ -3,12 +3,13 @@ name: CI_pytest_datawarrior_clustersort
 # name    : pytest.yml
 # purpose : regularly run pytest on datawarrior_clustersort
 # date    : [2025-03-19 Wed]
-# edit      [2025-03-26 Wed]
+# edit      [2025-04-13 Sun]
 
 on:
   push:
     branches:
-      - main           # additions to the principal branch "main"
+      - main
+      - dev
   pull_request:
     branches:
       - main           # PRs to enter the principal branch "main"
