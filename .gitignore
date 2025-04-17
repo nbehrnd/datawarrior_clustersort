@@ -1,5 +1,11 @@
 # .gitignore file for project datawarrior_clustersort
 *.html~
 *.org~
+*.swp
 error.log
-tests/__pycache__/
+build
+dist
+*.egg*
+__pycache__
+
+
