@@ -2,14 +2,9 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
-# the sequence of entries below follows the example on
-# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
-# as visited on [2025-03-27 Thu]
-
 [project]
 name = "datawarrior_clustersort"
 version = "0.1.1"
-dependencies = []  # None (it works with Python's standard library alone)
 requires-python = ">=3.10"
 authors = [
     { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
@@ -27,15 +22,23 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     "Operating System :: OS Independent",
 ]
+dependencies = []  # None (it works with Python's standard library alone)
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "build",
+    "flake8",
+    "mypy",
+    "pre-commit",
+    "pytest",
+]
 
 [project.urls]
 Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
 
 [project.scripts]
-datawarrior_clustersort = "datawarrior_clustersort:main"
-
-[tool.setuptools.packages.find]
-where = ["."]
+datawarrior_clustersort = "datawarrior_clustersort.datawarrior_clustersort:main"
 
 [tool.setuptools.package-data]
 "datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]

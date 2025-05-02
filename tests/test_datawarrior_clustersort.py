@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-04-02 Wed]
+# edit:    [2025-04-17 Thu]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -22,7 +22,7 @@ import subprocess
 
 import pytest
 
-from datawarrior_clustersort import (
+from datawarrior_clustersort.datawarrior_clustersort import (
     file_reader,
     identify_cluster_column,
     read_dw_list,
@@ -31,7 +31,7 @@ from datawarrior_clustersort import (
     permanent_report,
 )
 
-PRG = "datawarrior_clustersort/__init__.py"
+PRG = "src/datawarrior_clustersort/datawarrior_clustersort.py"
 INPUT_FILE = "100Random_Molecules.txt"
 OUTPUT_FILE = "100Random_Molecules_sort.txt"
 REFERENCE_SORT = "tests/100Random_Molecules_sort_ref.txt"
