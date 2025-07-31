@@ -59,3 +59,12 @@ datawarrior_clustersort = "datawarrior_clustersort.datawarrior_clustersort:main"
 [tool.setuptools.package-data]
 "datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
 
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = "tests"
+filterwarnings = "ignore::pytest.PytestCacheWarning"
+markers = [
+    "blackbox: a black-box test",
+    "imported: a test which imports a function of the script",
+]
+
