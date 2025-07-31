@@ -1,6 +1,6 @@
-name: CI_pytest_datawarrior_clustersort
+name: CI_pytest_mypy_datawarrior_clustersort
 
-# name    : pytest.yml
+# name    : pytest_mypy.yml
 # purpose : regularly run pytest on datawarrior_clustersort
 # date    : [2025-03-19 Wed]
 # edit      [2025-07-31 Thu]
@@ -43,3 +43,7 @@ jobs:
 
       - name: Run the check with pytest
         run: python -m pytest
+
+      - name: check with mypy
+        run:  python -m mypy .
+
