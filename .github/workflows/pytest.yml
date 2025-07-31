@@ -3,32 +3,31 @@ name: CI_pytest_datawarrior_clustersort
 # name    : pytest.yml
 # purpose : regularly run pytest on datawarrior_clustersort
 # date    : [2025-03-19 Wed]
-# edit      [2025-04-17 Thu]
+# edit      [2025-07-31 Thu]
 
 on:
   push:
     branches:
-      - main
+      - main             # updates to enter the principal branch "main"
       - dev
   pull_request:
     branches:
-      - main           # PRs to enter the principal branch "main"
+      - main             # PRs to enter the principal branch "main"
   workflow_dispatch:     # provide a manual trigger
-  # schedule:
-    # - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+  schedule:
+    - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
 
 jobs:
   test:
     strategy:
       matrix:
-        # for a factorial test, an explicit selection of GitHUb runner images
+        # for a factorial test, an explicit selection of GitHub runner images
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
-        # state of commit 310e8e9 as visited on 2025-05-02 Fri
-        os: [ubuntu-24.04, macos-15, windows-2025]
-        python-version: ["3.10", "3.13"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.13"]
     runs-on: ${{ matrix.os }}
 
-    timeout-minutes: 5  # Timeout for each job individually
+    timeout-minutes: 3  # Timeout for each job individually
 
     steps:
       - uses: actions/checkout@v4
@@ -40,9 +39,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies with PyPI
-        run: pip install -r requirements-dev.txt
+        run: pip install pytest mypy
 
-      - name: run the check by pytest
-        run: |
-          echo "default"
-          python -m pytest
+      - name: Run the check with pytest
+        run: python -m pytest
