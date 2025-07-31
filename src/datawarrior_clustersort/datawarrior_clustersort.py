@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-04-02 Wed]
+# edit:    [2025-07-31 Thu]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -38,7 +38,7 @@ logging.basicConfig(
 )
 
 
-def get_args() -> argparse.Namespace:
+def get_args(arg_list) -> argparse.Namespace:
     """collect the arguments from the command line"""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
@@ -64,7 +64,8 @@ def get_args() -> argparse.Namespace:
         populous cluster the lowest label""",
     )
 
-    return parser.parse_args()
+    args = parser.parse_args(arg_list)
+    return args
 
 
 def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
@@ -250,9 +251,9 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     return report_file
 
 
-def main() -> None:
+def main(arg_list=None) -> None:
     """join the functions"""
-    args = get_args()
+    args = get_args(arg_list)
     headline, table_body, old_cluster_label = file_reader(args.file)
 
     print("\nDataWarrior's assignment of clusters:")

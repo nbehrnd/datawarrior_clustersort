@@ -14,24 +14,40 @@ readme = "docs/README.rst"
 
 license-files = ["LICENSE"]
 keywords = ["datawarrior", "cluster"]
+
+# https://pypi.org/classifiers/
 classifiers = [
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python :: 3 :: Only",
     "Environment :: Console",
+    "Intended Audience :: Education",
     "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Natural Language :: English",
     "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
 ]
+
 dependencies = []  # None (it works with Python's standard library alone)
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "build",
-    "flake8",
-    "mypy",
-    "pre-commit",
-    "pytest",
+    "black>=25.1.0",
+    "build>=1.2.2.post1",
+    "flake8>=7.1.1",
+    "mypy>=1.17.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
 ]
 
 [project.urls]
@@ -42,4 +58,13 @@ datawarrior_clustersort = "datawarrior_clustersort.datawarrior_clustersort:main"
 
 [tool.setuptools.package-data]
 "datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = "tests"
+filterwarnings = "ignore::pytest.PytestCacheWarning"
+markers = [
+    "blackbox: a black-box test",
+    "imported: a test which imports a function of the script",
+]
 
