@@ -5,12 +5,15 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022.
 # date:    [2022-04-22 Fri]
-# edit:    [2025-04-13 Sun]
+# edit:    [2025-07-31 Thu]
 
 #+begin_export html
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 #+end_export
 
+[[./coverage-badge.svg]]
+[[./flake8-badge.svg]]
+[[./tests-badge.svg]]
 
 * context/motivation
 
