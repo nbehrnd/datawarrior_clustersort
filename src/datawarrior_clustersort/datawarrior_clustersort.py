@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-07-31 Thu]
+# edit:    [2025-08-01 Fri]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -269,5 +269,5 @@ def main(arg_list=None) -> None:
     read_dw_list(report_list, old_cluster_label)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-04-17 Thu]
+# edit:    [2025-08-01 Fri]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -29,7 +29,8 @@ from datawarrior_clustersort.datawarrior_clustersort import (
 
 
 @pytest.mark.imported
-def test_file_reader():
+def test_file_reader() -> None:
+    """Check recognizing headline, table body, DW's lowest cluster label."""
     probe_data = r"""Structure [idcode]	Cluster No	Is Representative	record_number
 edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1
 elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
@@ -50,8 +51,8 @@ elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
 
 
 @pytest.mark.imported
-def test_identify_cluster_column():
-    """identification of the cluster column"""
+def test_identify_cluster_column() -> None:
+    """Check identification of the cluster column."""
     input_string = "Structure [idcode]	Cluster No	Is Representative	record_number"
     expected_column = 1
     test_column = identify_cluster_column(input_string)
@@ -59,7 +60,12 @@ def test_identify_cluster_column():
 
 
 @pytest.mark.imported
-def test_read_dw_list():
+def test_read_dw_list() -> None:
+    """Perform a frequency analysis on DW assigned cluster labels.
+
+    This checks if DW assigned cluster labels are used to build a
+    dictionary where DW labels indicate (as key) to the number of
+    times they are assigned by DW (as value)."""
     # some records of DW cluster 1, 5, and 8 of `100Random_Molecules.txt`
     mock_table_body = [
         r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
@@ -83,7 +89,11 @@ def test_read_dw_list():
 
 
 @pytest.mark.imported
-def test_label_sorter_default_sort():
+def test_label_sorter_default_sort() -> None:
+    """Check the normal sort of a new frequency dictionary.
+
+    By default, the lowest key (label) describes the cluster with the
+    most structures (value)."""
     mock_dictionary = {"1": 4, "5": 3, "8": 2}
     reversed_order = False
     expected_dictionary = {"1": 1, "5": 2, "8": 3}
@@ -92,7 +102,11 @@ def test_label_sorter_default_sort():
 
 
 @pytest.mark.imported
-def test_label_sorter_reverse_sort():
+def test_label_sorter_reverse_sort() -> None:
+    """Check the reverse sort of a new frequency dictionary.
+
+    By default, the lowest key (label) describes the cluster with the
+    least number of structures (value)."""
     mock_dictionary = {"1": 4, "5": 3, "8": 2}
     reversed_order = True
     expected_dictionary = {"1": 3, "5": 2, "8": 1}
@@ -101,7 +115,8 @@ def test_label_sorter_reverse_sort():
 
 
 @pytest.mark.imported
-def test_update_cluster_labels():
+def test_update_cluster_labels() -> None:
+    """Check the reassignment of cluster labels."""
     # some of DW clusters 1, 5, and 8
     mock_table_body = [
         r"fko`H@D@yHsQ{OdTRbbbtRLLRTvRfoEjuTuUTAAUSPSBiAKL@@	1	No	6",
@@ -134,7 +149,8 @@ def test_update_cluster_labels():
 
 
 @pytest.mark.imported
-def test_permanent_report(tmp_path):
+def test_permanent_report(tmp_path) -> None:
+    """Probe the generation of a permanent record."""
     # prepare data to write
     input_file = "test_input.txt"
     headline = "Structure [idcode]	Cluster No	Is Representative	record_number"

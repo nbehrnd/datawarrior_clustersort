@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-07-31 Thu]
+# edit:    [2025-08-01 Fri]
 
 """External pytest checks by pytest on datawarrior_clustersort.py.
 
@@ -29,17 +29,14 @@ REFERENCE_SORT = "tests/100Random_Molecules_sort_ref.txt"
 REFERENCE_REVERSE_SORT = "tests/100Random_Molecules_rev_sort_ref.txt"
 
 
-def test_script_exists():
-    """check for the script's presence"""
+def test_script_exists() -> None:
+    """Check for the script's presence."""
     assert os.path.isfile(PRG), f"script {PRG} was not found"
 
 
-# section of black-box tests (the inner working doesn't matter):
-
-
 @pytest.mark.blackbox
-def test_get_test_data():
-    """get a copy of the test's input data"""
+def test_get_test_data() -> None:
+    """Check copy/paste of test input data to the script."""
     source = os.path.join("tests", INPUT_FILE)
     target = os.path.join(os.getcwd(), INPUT_FILE)
 
@@ -54,10 +51,16 @@ def test_get_test_data():
     except OSError as e:
         print(f"failed to copy '{INPUT_FILE}' for the test; {e}")
 
+    assert os.path.isfile(INPUT_FILE)
+
 
 @pytest.mark.blackbox
-def test_default_sort():
-    """check the results of the normal sort"""
+def test_default_sort() -> None:
+    """Check the results of the normal sort.
+
+    By this logic, label `1` is assigned to the cluster containing the
+    most structures.  Any cluster label higher than `1` is about a subsequent
+    cluster with equal or less structures."""
     if os.path.exists(OUTPUT_FILE):
         try:
             os.remove(OUTPUT_FILE)
@@ -77,8 +80,12 @@ def test_default_sort():
 
 
 @pytest.mark.blackbox
-def test_reverse_sort():
-    """check the results of the normal sort"""
+def test_reverse_sort() -> None:
+    """Check the results of the reversed sort.
+
+    By this logic, label `1` is for the cluster with the lowest number of
+    structures.  The higher the label (`2`, `3`, etc.), either the same, or
+    a higher number of structures are in this particular cluster."""
     if os.path.exists(OUTPUT_FILE):
         try:
             os.remove(OUTPUT_FILE)
@@ -98,8 +105,8 @@ def test_reverse_sort():
 
 
 @pytest.mark.blackbox
-def test_space_cleaning():
-    """remove copy of the input file"""
+def test_space_cleaning() -> None:
+    """Check the removal of the local copy of the input file."""
     if os.path.exists(INPUT_FILE):
         try:
             os.remove(INPUT_FILE)

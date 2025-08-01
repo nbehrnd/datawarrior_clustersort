@@ -1,7 +1,7 @@
 # Local analysis by pytest, coverage run pytest, flake8, and badge generation.
 #
 # This Makefile presumes an activated virtual environment of Python and an
-# internet connection for pytest's checks on pubchempy's interaction with NIH.
+# internet connection to resolve the dependencies (rule `analysis_setup`).
 # In contast to e.g., the coverage badge by coveralls, the setup here does not
 # rely on a separate account, nor a GitHub token to work.  By flag `-l`, the
 # badges are created locally, independent of genbadge's default to reach out
@@ -11,7 +11,6 @@ default:
 	@echo "Tap the tabulator key twice to display the options available."
 
 analysis_setup:
-# For now, the partial overlap with `requirements/dev.txt` is intentional.
 	pip install coverage flake8 genbadge[all] pyclean pytest
 
 coverage_analysis:
