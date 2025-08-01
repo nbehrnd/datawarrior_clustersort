@@ -2,8 +2,8 @@ name: CI_wheel_datawarrior_clustersort
 
 # name:    build_wheel.yml
 # purpose: build a .whl as an artifact without a secret/GitHub token
-# date:    [2025-07-31 Thus]
-# edit:
+# date:    [2025-07-31 Thu]
+# edit:    [2025-08-01 Fri]
 
 on:
   workflow_dispatch:  # launch only by the manual trigger
@@ -33,10 +33,10 @@ jobs:
         pip install build
         python -m build
 
-    - name: delivery within an archive `pubchem_wheel.zip`
+    - name: package archive `datawarrior_clustersort_wheel.zip`
       uses: actions/upload-artifact@v4
       with:
-        name: datawarrior_saturate_Murcko_scaffolds_wheel
+        name: datawarrior_clustersort_wheel
         path: |
           dist/*.whl
           dist/*.tar.gz
