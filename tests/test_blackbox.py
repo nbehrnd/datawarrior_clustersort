@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-08-01 Fri]
+# edit:    [2025-08-12 Tue]
 
 """External pytest checks by pytest on datawarrior_clustersort.py.
 
@@ -15,7 +15,6 @@ Checks in this file probe the application as a whole from the outside
 defined in file `test_with_imports.py` labelled by `imported`."""
 
 import filecmp
-
 import os
 import shutil
 import subprocess
@@ -23,92 +22,144 @@ import subprocess
 import pytest
 
 PRG = "src/datawarrior_clustersort/datawarrior_clustersort.py"
-INPUT_FILE = "100Random_Molecules.txt"
-OUTPUT_FILE = "100Random_Molecules_sort.txt"
-REFERENCE_SORT = "tests/100Random_Molecules_sort_ref.txt"
-REFERENCE_REVERSE_SORT = "tests/100Random_Molecules_rev_sort_ref.txt"
 
 
+@pytest.mark.blackbox
 def test_script_exists() -> None:
     """Check for the script's presence."""
     assert os.path.isfile(PRG), f"script {PRG} was not found"
 
 
+@pytest.fixture
+def prepare_input_file() -> None:
+    """Provide a suitable input file to test and process."""
+    dummy_in = "input_file.txt"
+    dummy_out = "input_file_sort.txt"
+
+    content = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	3	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	3	No	12
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	4	No	14
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	4	No	21
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No	25"""
+    with open(dummy_in, mode="w", encoding="utf-8") as new:
+        new.write(content)
+    yield dummy_in
+
+    os.remove(dummy_in)
+    os.remove(dummy_out)
+
+
 @pytest.mark.blackbox
-def test_get_test_data() -> None:
-    """Check copy/paste of test input data to the script."""
-    source = os.path.join("tests", INPUT_FILE)
-    target = os.path.join(os.getcwd(), INPUT_FILE)
-
-    if os.path.exists(INPUT_FILE):
-        try:
-            os.remove(INPUT_FILE)
-        except OSError as e:
-            print(f"failed to remove old '{INPUT_FILE}' prior to the test; {e}")
-
-    try:
-        shutil.copy(source, target)
-    except OSError as e:
-        print(f"failed to copy '{INPUT_FILE}' for the test; {e}")
-
-    assert os.path.isfile(INPUT_FILE)
-
-
-@pytest.mark.blackbox
-def test_default_sort() -> None:
-    """Check the results of the normal sort.
+def test_default_sort2file(prepare_input_file) -> None:
+    """Check the results of the normal sort to file.
 
     By this logic, label `1` is assigned to the cluster containing the
-    most structures.  Any cluster label higher than `1` is about a subsequent
-    cluster with equal or less structures."""
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            os.remove(OUTPUT_FILE)
-        except OSError as e:
-            print(f"failed to remove '{OUTPUT_FILE}' prior to the test; {e}")
+    most structures.  Any cluster label higher than `1` is about a
+    subsequent cluster with equal or less structures."""
+    subprocess.run(f"python {PRG} input_file.txt", shell=True, check=True)
 
-    subprocess.run(f"python {PRG} {INPUT_FILE}", shell=True, check=True)
-    assert os.path.exists(OUTPUT_FILE), f"file '{OUTPUT_FILE}' was not written"
-    assert filecmp.cmp(
-        OUTPUT_FILE, REFERENCE_SORT, shallow=False
-    ), "mismatch of expected/reference content"
+    output_file = "input_file_sort.txt"
+    with open(output_file, mode="r", encoding="utf-8") as source:
+        content = source.read()
 
-    try:
-        os.remove(OUTPUT_FILE)
-    except OSError as e:
-        print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
+    expected_content = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	1	No	5
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	1	No	14
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	1	No	21
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	1	No	25
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	2	No	3
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	2	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	2	No	12
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	3	No	2
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	3	No	4
+"""
+
+    assert content == expected_content
 
 
-@pytest.mark.blackbox
-def test_reverse_sort() -> None:
+def test_default_sort2CLI(prepare_input_file, capfd) -> None:
+    """Check the results of the normal sort to the CLI."""
+    subprocess.run(f"python {PRG} input_file.txt", shell=True, check=True)
+    out, err = capfd.readouterr()
+
+    expected_content = r"""
+DataWarrior's assignment of clusters:
+cluster:        2 molecules:        2
+cluster:        3 molecules:        3
+cluster:        4 molecules:        4
+
+clusters newly sorted and labeled:
+cluster:        1 molecules:        4
+cluster:        2 molecules:        3
+cluster:        3 molecules:        2
+"""
+
+    # acount for different definitions of line ending
+    #
+    # In the report to the CLI of e.g., xfce4-terminal in Debian 13 and
+    # by cmd.exe of Windows, the different advance to the next line can
+    # be an issue.  Since this script is written in Debian, the check
+    # `assert out == expected_content` set up with the multiline string
+    # without reformat into a list otherwise would pass in Debian, but
+    # fail in Windows.
+    out = out.splitlines()
+    expected_content = expected_content.splitlines()
+
+    assert out == expected_content
+
+
+def test_reverse_sort2file(prepare_input_file) -> None:
     """Check the results of the reversed sort.
 
-    By this logic, label `1` is for the cluster with the lowest number of
-    structures.  The higher the label (`2`, `3`, etc.), either the same, or
-    a higher number of structures are in this particular cluster."""
-    if os.path.exists(OUTPUT_FILE):
-        try:
-            os.remove(OUTPUT_FILE)
-        except OSError as e:
-            print(f"failed to remove '{OUTPUT_FILE}' prior to the test; {e}")
+    By this logic, label `1` is assigned to the cluster with the lowest
+    number of structures.  Then, the higher the label (`2`, `3`, etc.),
+    either the same, or a higher number of structures are in this
+    particular cluster."""
+    subprocess.run(f"python {PRG} input_file.txt -r", shell=True, check=True)
 
-    subprocess.run(f"python {PRG} {INPUT_FILE} -r", shell=True, check=True)
-    assert os.path.exists(OUTPUT_FILE), f"file '{OUTPUT_FILE}' was not written"
-    assert filecmp.cmp(
-        OUTPUT_FILE, REFERENCE_REVERSE_SORT, shallow=False
-    ), "mismatch of expected/reference content"
+    output_file = "input_file_sort.txt"
+    with open(output_file, mode="r", encoding="utf-8") as source:
+        content = source.read()
 
-    try:
-        os.remove(OUTPUT_FILE)
-    except OSError as e:
-        print(f"removal of '{OUTPUT_FILE}' after the test failed; {e}")
+    expected_content = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	1	No	2
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	1	No	4
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	2	No	3
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	2	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	2	No	12
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	3	No	5
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	3	No	14
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	3	No	21
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	3	No	25
+"""
+
+    assert content == expected_content
 
 
-@pytest.mark.blackbox
-def test_space_cleaning() -> None:
-    """Check the removal of the local copy of the input file."""
-    if os.path.exists(INPUT_FILE):
-        try:
-            os.remove(INPUT_FILE)
-        except OSError as e:
-            print(f"failed to remove old '{INPUT_FILE}' after the test; {e}")
+def test_reverse_sort2CLI(prepare_input_file, capfd) -> None:
+    """Check the results of the reverse sort to the CLI."""
+    subprocess.run(f"python {PRG} -r input_file.txt", shell=True, check=True)
+    out, err = capfd.readouterr()
+
+    expected_content = r"""
+DataWarrior's assignment of clusters:
+cluster:        2 molecules:        2
+cluster:        3 molecules:        3
+cluster:        4 molecules:        4
+
+clusters newly sorted and labeled:
+cluster:        1 molecules:        2
+cluster:        2 molecules:        3
+cluster:        3 molecules:        4
+"""
+
+    # account for different line endings (cf. analogue check above)
+    out = out.splitlines()
+    expected_content = expected_content.splitlines()
+
+    assert out == expected_content
