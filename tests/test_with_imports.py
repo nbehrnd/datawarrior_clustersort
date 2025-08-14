@@ -183,8 +183,19 @@ def test_permanent_report(tmp_path) -> None:
 def dummy_file():
     """Provide a dummy file to eventually check get_args."""
     dummy = "input_file.txt"
+    content = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	3	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	3	No	12
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	4	No	14
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	4	No	21
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No	25"""
+
     with open(dummy, mode="w", encoding="utf-8") as new:
-        new.write("test")
+        new.write(content)
     yield dummy
     os.remove(dummy)
 
@@ -211,3 +222,15 @@ def test_get_args(command, reverse, dummy_file):
     assert (args.reverse) == (reverse)
 
 
+test_cases = [
+    ("input_file.txt", False),
+]
+
+
+@pytest.mark.imported
+@pytest.mark.parametrize("command, reverse", test_cases)
+def test_main(command, reverse, dummy_file):
+    """Probe the main function."""
+    main(shlex.split("input_file.txt"))
+    assert (reverse) == False
+    os.remove("input_file_sort.txt")
