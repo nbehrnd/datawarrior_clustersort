@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-08-01 Fri]
+# edit:    [2025-08-14 Thu]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -15,6 +15,8 @@ the import of a function of the main script are marked `imported`.
 """
 
 import io
+import os
+import shlex
 
 import pytest
 
@@ -25,6 +27,8 @@ from datawarrior_clustersort.datawarrior_clustersort import (
     label_sorter,
     update_cluster_labels,
     permanent_report,
+    get_args,
+    main,
 )
 
 
@@ -173,3 +177,37 @@ def test_permanent_report(tmp_path) -> None:
     assert (
         output_file_path.read_text() == expected_content
     ), "incorrect content in output file"
+
+
+@pytest.fixture
+def dummy_file():
+    """Provide a dummy file to eventually check get_args."""
+    dummy = "input_file.txt"
+    with open(dummy, mode="w", encoding="utf-8") as new:
+        new.write("test")
+    yield dummy
+    os.remove(dummy)
+
+
+@pytest.mark.imported
+def test_shlex_selfcheck() -> None:
+    """Probe proper running of shlex of Python's standard library."""
+    command = "file.txt -r"
+    as_list = ["file.txt", "-r"]
+
+
+@pytest.mark.imported
+@pytest.mark.parametrize(
+    "command, reverse",
+    [
+        ("input_file.txt", False),
+        ("input_file.txt -r", True),
+        ("input_file.txt --reverse", True),
+    ],
+)
+def test_get_args(command, reverse, dummy_file):
+    """Check faithful transfer of optional parameter -r."""
+    args = get_args(shlex.split(command))
+    assert (args.reverse) == (reverse)
+
+
