@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-08-12 Tue]
+# edit:    [2026-03-03 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -39,7 +39,7 @@ logging.basicConfig(
 
 
 def get_args(arg_list) -> argparse.Namespace:
-    """collect the arguments from the command line"""
+    """Collect the arguments from the command line."""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
         molecules per cluster.  The triage by frequency reports the cluster
@@ -70,7 +70,7 @@ def get_args(arg_list) -> argparse.Namespace:
 
 def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
     """
-    access the data as provided by DataWarrior's .txt file
+    Access the data as provided by DataWarrior's .txt file.
 
     :param input_file: DataWarrior's exported .txt list of clusters
     :type input_file: TextIO
@@ -93,7 +93,7 @@ def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
 
 def identify_cluster_column(headline: str) -> int:
     """
-    identify the column with DW's assigned cluster labels
+    Identify the column with DW's assigned cluster labels.
 
     The first occurrence of 'Cluster No' identified by a regular
     expression is assumed to indicate the column of interest.
@@ -112,7 +112,7 @@ def identify_cluster_column(headline: str) -> int:
 
 def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int]:
     """
-    query current cluster labels' popularity
+    Query current cluster labels' popularity.
 
     Query currently assigned cluster labels DataWarrior assigned,
     and how many molecules each represents.
@@ -146,7 +146,7 @@ def read_dw_list(table_body: List[str], old_cluster_label: int) -> Dict[str, int
 
 def label_sorter(count: Dict[str, int], reversed_order: bool) -> Dict[str, int]:
     """
-    relate DW assigned cluster labels with the new ones to be used
+    Relate DW assigned cluster labels with the new ones to be used.
 
     First sort the old cluster labels by number of molecules per
     cluster (i.e., by popularity).  Then assign how old labels by
@@ -177,7 +177,7 @@ def update_cluster_labels(
     table_body: List[str], old_cluster_label: int, label_dictionary: Dict[str, int]
 ) -> List[str]:
     """
-    update the molecules' labels by cluster popularity
+    Update the molecules' labels by cluster popularity.
 
     With the dictionary which relates original cluster labels
     (assigned by DataWarrior) and the new ones (based on cluster
@@ -213,13 +213,14 @@ def update_cluster_labels(
 
 
 def sort_by_cluster_label(s: str) -> int:
-    """return a key to sort records in `table_body` by cluster label"""
+    """Return a key to sort records in `table_body` by cluster label."""
     return int(s.split("\t")[1])
 
 
 def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
-    """
-    provide a permanent record DW may access
+    (
+        """
+    Rrovide a permanent record DW may access.
 
     :param input_file: file name of the input file
     :type input_file: str
@@ -229,7 +230,9 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     :type listing: List[str]
     :return: complete data table (headline and table body)
     :rtype: str
-    """ """Provide a permanent record DW may access."""
+    """
+        """Provide a permanent record DW may access."""
+    )
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
 
@@ -246,7 +249,7 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
 
 
 def main(arg_list=None) -> None:
-    """join the functions"""
+    """Join the functions."""
     args = get_args(arg_list)
     headline, table_body, old_cluster_label = file_reader(args.file)
 

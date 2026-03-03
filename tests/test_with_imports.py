@@ -42,9 +42,7 @@ elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
 """
     mock_file = io.StringIO(probe_data)
     headline, table_body, old_cluster_label = file_reader(mock_file)
-    assert (
-        headline == "Structure [idcode]\tCluster No\tIs Representative\trecord_number"
-    )
+    assert headline == "Structure [idcode]\tCluster No\tIs Representative\trecord_number"
     assert table_body == [
         r"edR\FD@KFncOLbji`HbHHrJIJYKJYSQRJiSIQITLRJ@pp@@DtuKMMP@@PARBj@	1	No	1",
         r"elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2",
@@ -57,7 +55,9 @@ elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
 @pytest.mark.imported
 def test_identify_cluster_column() -> None:
     """Check identification of the cluster column."""
-    input_string = "Structure [idcode]	Cluster No	Is Representative	record_number"
+    input_string = (
+        "Structure [idcode]	Cluster No	Is Representative	record_number"
+    )
     expected_column = 1
     test_column = identify_cluster_column(input_string)
     assert test_column == expected_column, "wrong column index"
@@ -174,9 +174,9 @@ def test_permanent_report(tmp_path) -> None:
     assert output_file_path.exists(), "creation output file failed"
 
     expected_content = "\n".join([headline] + listing) + "\n"
-    assert (
-        output_file_path.read_text() == expected_content
-    ), "incorrect content in output file"
+    assert output_file_path.read_text() == expected_content, (
+        "incorrect content in output file"
+    )
 
 
 @pytest.fixture
