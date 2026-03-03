@@ -52,6 +52,6 @@ jobs:
 
       - name: check with mypy
         run: |
-          mypy src/datawarrior_clustersort/datawarrior_clustersort.py 
+          mypy src/app/datawarrior_clustersort.py
 
 

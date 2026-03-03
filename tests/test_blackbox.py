@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-08-12 Tue]
+# edit:    [2026-03-03 Tue]
 
 """External pytest checks by pytest on datawarrior_clustersort.py.
 
@@ -21,7 +21,7 @@ import subprocess
 
 import pytest
 
-PRG = "src/datawarrior_clustersort/datawarrior_clustersort.py"
+PRG = "src/app/datawarrior_clustersort.py"
 
 
 @pytest.mark.blackbox

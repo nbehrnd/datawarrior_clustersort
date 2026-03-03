@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-08-14 Thu]
+# edit:    [2026-03-03 Tue]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -20,7 +20,7 @@ import shlex
 
 import pytest
 
-from datawarrior_clustersort.datawarrior_clustersort import (
+from app.datawarrior_clustersort import (
     file_reader,
     identify_cluster_column,
     read_dw_list,

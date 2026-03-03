@@ -54,7 +54,7 @@ dev = [
 Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
 
 [project.scripts]
-datawarrior_clustersort = "datawarrior_clustersort.datawarrior_clustersort:main"
+datawarrior_clustersort = "app.datawarrior_clustersort:main"
 
 [tool.setuptools.package-data]
 "datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
