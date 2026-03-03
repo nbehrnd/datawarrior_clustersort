@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2025-08-01 Fri]
+# edit:    [2025-08-14 Thu]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -15,6 +15,8 @@ the import of a function of the main script are marked `imported`.
 """
 
 import io
+import os
+import shlex
 
 import pytest
 
@@ -25,6 +27,8 @@ from datawarrior_clustersort.datawarrior_clustersort import (
     label_sorter,
     update_cluster_labels,
     permanent_report,
+    get_args,
+    main,
 )
 
 
@@ -173,3 +177,60 @@ def test_permanent_report(tmp_path) -> None:
     assert (
         output_file_path.read_text() == expected_content
     ), "incorrect content in output file"
+
+
+@pytest.fixture
+def dummy_file():
+    """Provide a dummy file to eventually check get_args."""
+    dummy = "input_file.txt"
+    content = r"""Structure [idcode]	Cluster No	Is Representative	record_number
+elRRF@@DLCH`FMLfilbbRbrTVtTTRbtqbRRJzAQZijfhHbbZBA@@@@	2	No	2
+elZPE@@@DFACBeghT\bfbbfabRRvfbRbVaTdt\BfvZBHBBJf@Hii`@@@	3	No	3
+eo`TND@MCNO@dnkg`HbpHrJJIQGQIRJGQQKKQbQXzBAajef`XHX@HID	2	No	4
+fmg@p@@HkvZ|bfbbbbfTT\TqtEXwfjAbJJjZfcFEjA`@	4	No	5
+fbma`@@`PKHihdhdXdierWhirt@QPAE@`@@	3	No	11
+fnsQ`@CE@cJSK\l{]kLeNCdkTA@PQTrD@@	3	No	12
+fmwAR@KNBeXICHhddeDeDhXedTjLejNYj`HfjjjjAPZ^P@	4	No	14
+eg`TN@@LD`DBjecklbbVbbTTrbrbTjvbcegfWSUTBQETuUSPhTHq@@	4	No	21
+fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No	25"""
+
+    with open(dummy, mode="w", encoding="utf-8") as new:
+        new.write(content)
+    yield dummy
+    os.remove(dummy)
+
+
+@pytest.mark.imported
+def test_shlex_selfcheck() -> None:
+    """Probe proper running of shlex of Python's standard library."""
+    command = "file.txt -r"
+    as_list = ["file.txt", "-r"]
+
+
+@pytest.mark.imported
+@pytest.mark.parametrize(
+    "command, reverse",
+    [
+        ("input_file.txt", False),
+        ("input_file.txt -r", True),
+        ("input_file.txt --reverse", True),
+    ],
+)
+def test_get_args(command, reverse, dummy_file):
+    """Check faithful transfer of optional parameter -r."""
+    args = get_args(shlex.split(command))
+    assert (args.reverse) == (reverse)
+
+
+test_cases = [
+    ("input_file.txt", False),
+]
+
+
+@pytest.mark.imported
+@pytest.mark.parametrize("command, reverse", test_cases)
+def test_main(command, reverse, dummy_file):
+    """Probe the main function."""
+    main(shlex.split("input_file.txt"))
+    assert (reverse) == False
+    os.remove("input_file_sort.txt")

@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2025-08-01 Fri]
+# edit:    [2025-08-12 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -80,12 +80,6 @@ def file_reader(input_file: TextIO) -> Tuple[str, List[str], int]:
     try:
         raw_table = input_file.read().splitlines()
         raw_table = [i.strip() for i in raw_table if len(i) > 1]
-        if len(raw_table) < 3:
-            logging.error(
-                "Only %s non-empty line(s) instead of 3 in the input file.",
-                len(raw_table),
-            )
-            sys.exit(1)
 
         headline = raw_table[0]
         table_body = raw_table[1:]
