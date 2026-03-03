@@ -27,7 +27,7 @@ import logging
 import os
 import re
 import sys
-from typing import List, Tuple, Dict, TextIO
+from typing import Dict, List, TextIO, Tuple
 
 # Configure logging
 logging.basicConfig(

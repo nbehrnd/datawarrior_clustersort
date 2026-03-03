@@ -14,9 +14,7 @@ Checks in this file probe the application as a whole from the outside
 (blackbox tests) marked by `blackbox`.  It is complemented by checks
 defined in file `test_with_imports.py` labelled by `imported`."""
 
-import filecmp
 import os
-import shutil
 import subprocess
 
 import pytest

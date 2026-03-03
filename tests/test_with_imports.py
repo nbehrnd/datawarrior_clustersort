@@ -22,13 +22,13 @@ import pytest
 
 from app.datawarrior_clustersort import (
     file_reader,
-    identify_cluster_column,
-    read_dw_list,
-    label_sorter,
-    update_cluster_labels,
-    permanent_report,
     get_args,
+    identify_cluster_column,
+    label_sorter,
     main,
+    permanent_report,
+    read_dw_list,
+    update_cluster_labels,
 )
 
 
