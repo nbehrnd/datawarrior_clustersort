@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "datawarrior_clustersort"
-version = "0.1.1"
+version = "0.1.2"
 requires-python = ">=3.10"
 authors = [
     { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
@@ -33,6 +33,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Topic :: Scientific/Engineering :: Chemistry",
@@ -42,12 +43,10 @@ dependencies = []  # None (it works with Python's standard library alone)
 
 [project.optional-dependencies]
 dev = [
-    "black>=25.1.0",
     "build>=1.2.2.post1",
-    "flake8>=7.1.1",
-    "mypy>=1.17.1",
-    "pre-commit>=4.2.0",
-    "pytest>=8.4.1",
+    "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.4",
 ]
 
 [project.urls]
@@ -68,3 +67,15 @@ markers = [
     "imported: a test which imports a function of the script",
 ]
 
+[tool.ruff]
+line-length = 90
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false

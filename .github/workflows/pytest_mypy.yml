@@ -46,7 +46,7 @@ jobs:
           pip install mypy
 
       - name: Run the check with pytest
-        run: | 
+        run: |
           pytest
           pytest -v
 

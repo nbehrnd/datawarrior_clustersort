@@ -3,7 +3,7 @@ name: CI_tox_datawarrior_clustersort
 # name    : tox.yml
 # purpose : run pytest on the saturator script if deemed necessary
 # date    : [2025-07-31 Thu]
-# edit
+# edit    : [2026-03-03 Tue]
 
 on:
   workflow_dispatch:  # the manual trigger
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
 
     steps:
     - uses: actions/checkout@v4
