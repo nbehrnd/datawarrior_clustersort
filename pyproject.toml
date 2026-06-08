@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,7 +11,7 @@ authors = [
 ]
 description = "reassign DW cluster labels by their popularity"
 readme = "docs/README.rst"
-
+license = "GPL-2.0-only"
 license-files = ["LICENSE"]
 keywords = ["datawarrior", "cluster"]
 
@@ -23,7 +23,6 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
