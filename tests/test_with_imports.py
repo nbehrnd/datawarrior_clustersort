@@ -230,5 +230,5 @@ test_cases = [
 def test_main(command, reverse, dummy_file):
     """Probe the main function."""
     main(shlex.split("input_file.txt"))
-    assert (reverse) == False
+    assert (reverse) is False
     os.remove("input_file_sort.txt")
