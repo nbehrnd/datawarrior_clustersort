@@ -3,7 +3,7 @@ name: CI_wheel_datawarrior_clustersort
 # name:    build_wheel.yml
 # purpose: build a .whl as an artifact without a secret/GitHub token
 # date:    [2025-07-31 Thu]
-# edit:    [2026-03-03 Tue]
+# edit:    [2026-06-15 Mon]
 
 on:
   workflow_dispatch:  # launch only by the manual trigger
@@ -40,4 +40,3 @@ jobs:
         path: |
           dist/*.whl
           dist/*.tar.gz
-

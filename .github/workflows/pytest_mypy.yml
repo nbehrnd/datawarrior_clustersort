@@ -3,7 +3,7 @@ name: CI_pytest_mypy_datawarrior_clustersort
 # name    : pytest_mypy.yml
 # purpose : regularly run pytest on datawarrior_clustersort
 # date    : [2025-03-19 Wed]
-# edit      [2026-03-03 Tue]
+# edit      [2026-06-15 Mon]
 
 on:
   push:
@@ -53,5 +53,3 @@ jobs:
       - name: check with mypy
         run: |
           mypy src/app/datawarrior_clustersort.py
-
-

@@ -48,7 +48,7 @@ and clustered at low threshold of similarity (`Structure
   FragFp 0.4`, file `100Random_Molecules.dwar`). The export (file
 `100Random_Molecules.txt`, see the `tests` subfolder of this project, or
 your site-packages directory after installation of the the platform
-indepedent Python wheel on the release page) was processed by
+indenpedent Python wheel on the release page) was processed by
 
 ``` bash
 python3 datawarrior_clustersort.py 100Random_Molecules.txt

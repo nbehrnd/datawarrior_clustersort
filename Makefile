@@ -2,10 +2,10 @@
 #
 # This Makefile presumes an activated virtual environment of Python and an
 # internet connection to resolve the dependencies (rule `analysis_setup`).
-# In contast to e.g., the coverage badge by coveralls, the setup here does not
-# rely on a separate account, nor a GitHub token to work.  By flag `-l`, the
-# badges are created locally, independent of genbadge's default to reach out
-# for shields.io.
+# In contrast to e.g., the coverage badge by coveralls, the setup here
+# does not rely on a separate account, nor a GitHub token to work.  By
+# flag `-l`, the badges are created locally, independent of genbadge's
+#  default to reach out for shields.io.
 
 default:
 	@echo "Tap the tabulator key twice to display the options available."

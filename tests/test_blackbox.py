@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2026-03-03 Tue]
+# edit:    [2026-06-15 Mon]
 
 """External pytest checks by pytest on datawarrior_clustersort.py.
 
@@ -97,7 +97,7 @@ cluster:        2 molecules:        3
 cluster:        3 molecules:        2
 """
 
-    # acount for different definitions of line ending
+    # account for different definitions of line ending
     #
     # In the report to the CLI of e.g., xfce4-terminal in Debian 13 and
     # by cmd.exe of Windows, the different advance to the next line can
