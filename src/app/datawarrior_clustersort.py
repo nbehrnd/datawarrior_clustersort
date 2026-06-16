@@ -218,8 +218,7 @@ def sort_by_cluster_label(s: str) -> int:
 
 
 def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
-    (
-        """
+    ("""
     Rrovide a permanent record DW may access.
 
     :param input_file: file name of the input file
@@ -230,9 +229,7 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     :type listing: List[str]
     :return: complete data table (headline and table body)
     :rtype: str
-    """
-        """Provide a permanent record DW may access."""
-    )
+    """ """Provide a permanent record DW may access.""")
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
 

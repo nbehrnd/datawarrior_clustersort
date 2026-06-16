@@ -5,7 +5,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022.
 # date:    [2022-04-22 Fri]
-# edit:    [2025-07-31 Thu]
+# edit:    [2026-06-15 Mon]
 
 #+begin_export html
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
@@ -54,7 +54,7 @@
   FragFp 0.4=, file =100Random_Molecules.dwar=).  The export (file
   =100Random_Molecules.txt=, see the =tests= subfolder of this
   project, or your site-packages directory after installation of the
-  the platform indepedent Python wheel on the release page) was
+  the platform independent Python wheel on the release page) was
   processed by
 
   #+begin_src bash :tangle no :results no
@@ -92,7 +92,7 @@ cluster:       10 molecules:        1
 cluster:       11 molecules:        1
   #+end_src
 
-  
+
   A running instance of DataWarrior was able to read the newly written
   file ~100Random_Molecules_sort.txt~ both by ~File -> Open~, as well
   as by the short cut ~Ctrl + O~.

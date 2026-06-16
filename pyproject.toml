@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,7 +11,7 @@ authors = [
 ]
 description = "reassign DW cluster labels by their popularity"
 readme = "docs/README.rst"
-
+license = "GPL-2.0-only"
 license-files = ["LICENSE"]
 keywords = ["datawarrior", "cluster"]
 
@@ -23,7 +23,6 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
@@ -49,6 +48,15 @@ dev = [
     "ruff>=0.15.4",
 ]
 
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "mypy>=1.19.1",
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.4",
+    "pytest>=9.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
 
@@ -58,14 +66,18 @@ datawarrior_clustersort = "app.datawarrior_clustersort:main"
 [tool.setuptools.package-data]
 "datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
 
-[tool.pytest.ini_options]
-pythonpath = "src"
-testpaths = "tests"
-filterwarnings = "ignore::pytest.PytestCacheWarning"
+[tool.pytest]
+pythonpath = ["src"]
+testpaths = ["tests"]
+filterwarnings = ["ignore::pytest.PytestCacheWarning"]
 markers = [
     "blackbox: a black-box test",
     "imported: a test which imports a function of the script",
 ]
+minversion = "9"
+log_level = "INFO"
+strict = true
+addopts = ["-ra"]
 
 [tool.ruff]
 line-length = 90
@@ -79,3 +91,6 @@ ignore = ["E501"]
 quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
+
+[tool.codespell]
+skip = "*.dwar, *Molecules*.txt"

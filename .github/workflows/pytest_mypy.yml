@@ -3,7 +3,7 @@ name: CI_pytest_mypy_datawarrior_clustersort
 # name    : pytest_mypy.yml
 # purpose : regularly run pytest on datawarrior_clustersort
 # date    : [2025-03-19 Wed]
-# edit      [2026-03-03 Tue]
+# edit      [2026-06-16 Tue]
 
 on:
   push:
@@ -16,6 +16,11 @@ on:
   workflow_dispatch:     # provide a manual trigger
   schedule:
     - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
+
+# prevent concurrency of workflows (rule GH102):
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -53,5 +58,3 @@ jobs:
       - name: check with mypy
         run: |
           mypy src/app/datawarrior_clustersort.py
-
-
