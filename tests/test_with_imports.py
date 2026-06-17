@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2025
 # date:    [2025-03-19 Wed]
-# edit:    [2026-06-15 Mon]
+# edit:    [2026-06-17 Wed]
 
 """pytest script of datawarrior_clustersort.py
 
@@ -202,7 +202,8 @@ fak@r@HHe[qPAFRPjIJKJJI[QHRgAjuZ@Hjjjja\Zahe@@	4	No	25"""
 def test_shlex_selfcheck() -> None:
     """Probe proper running of shlex of Python's standard library."""
     command = "file.txt -r"
-    as_list = ["file.txt", "-r"]
+    as_list = shlex.split(command)
+    assert as_list == ["file.txt", "-r"]
 
 
 @pytest.mark.imported
