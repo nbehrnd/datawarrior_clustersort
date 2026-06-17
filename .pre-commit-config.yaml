@@ -1,16 +1,10 @@
 # date: [2025-01-29 Wed]
-# edit: [2026-06-15 Mon]
-#
-# In contrast to the checks by code reformatter Black, the setup of this
-# git-precommit hook does not prevent a Python script to enter the commit
-# history even if flake8 identifies an issue (`--exit-zero`).  To use
-# this hook, resolve the dependencies (see `requirements-dev.txt`) and
-# update `.git/hooks/` by the command `pre-commit install`.
+# edit: [2026-06-17 Wed]
 #
 # Notes:
 #
-# - the installation creates the local folder `~/.cache/pre-commit` in
-#   addition of the virtual environment you explicitly set up
+# - the installation by `pre-commit install` creates the local folder
+#   `~/.cache/pre-commit` in with the data supporting the hooks' work
 # - while editing the Python scripts, `pre-commit run --all-files` allows
 #   to launch the tests separately and prior to e.g., `git add *.py`
 # - if necessary, `git commit -m "commit message" --no-verify` allows to
@@ -39,18 +33,15 @@ repos:
     rev: 26.5.1
     hooks:
       - id: black
+        name: black (on .py)
         args:
           - --line-length=90
-
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
-    hooks:
-      - id: codespell
 
   - repo: https://github.com/adamchainz/blacken-docs
     rev: 1.20.0
     hooks:
       - id: blacken-docs
+        name: black (in code blocks .md, .rst, .tex contain)
         additional_dependencies:
         - black==26.3.1
 
@@ -58,6 +49,12 @@ repos:
     rev: v1.10.0
     hooks:
       - id: python-use-type-annotations
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        name: codespell (cf. configuration `[tool.codespell]`)
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
