@@ -19,10 +19,10 @@ jobs:
 
     steps:
     - name: checkout of the local repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v7
 
     - name: set up Python
-      uses: actions/setup-python@v4  # compare with https://github.com/actions
+      uses: actions/setup-python@v6.2.0  # compare with https://github.com/actions
       with:
         python-version: "3.13"
 
@@ -34,7 +34,7 @@ jobs:
         python -m build
 
     - name: package archive `datawarrior_clustersort_wheel.zip`
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: datawarrior_clustersort_wheel
         path: |
