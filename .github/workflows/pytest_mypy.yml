@@ -8,11 +8,11 @@ name: CI_pytest_mypy_datawarrior_clustersort
 on:
   push:
     branches:
-      - main             # updates to enter the principal branch "main"
+      - main
       - dev
   pull_request:
     branches:
-      - main             # PRs to enter the principal branch "main"
+      - main
   workflow_dispatch:     # provide a manual trigger
   schedule:
     - cron: "0 0 1 * *"  # once each 1st of a month, at 00:00 UTC (cf. https://crontab.guru/)
@@ -29,15 +29,13 @@ jobs:
         # for a factorial test, an explicit selection of GitHub runner images
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.13"]
+        python-version: ["3.x"]
     runs-on: ${{ matrix.os }}
 
-    timeout-minutes: 3  # Timeout for each job individually
+    timeout-minutes: 3  # individual timeout for each job
 
     steps:
       - uses: actions/checkout@v7
-        # by [2024-10-23 Wed], this version possibly will be considered "old", cf.
-        # https://github.blog/changelog/2023-09-22-github-actions-transitioning-from-node-16-to-node-20/
 
       - uses: actions/setup-python@v6.2.0
         with:
