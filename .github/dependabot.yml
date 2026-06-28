@@ -4,8 +4,22 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     groups:
       actions:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
+
+  # Maintain Python dependencies
+  - package-ecosystem: "pip"  # i.e. updates only in `pyproject.toml`
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    groups:
+      pip:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 7
