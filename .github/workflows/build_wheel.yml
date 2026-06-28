@@ -3,11 +3,11 @@ name: CI_wheel_datawarrior_clustersort
 # name:    build_wheel.yml
 # purpose: build a .whl as an artifact without a secret/GitHub token
 # date:    [2025-07-31 Thu]
-# edit:    [2026-06-15 Mon]
+# edit:    [2026-06-28 Sun]
 
 on:
   workflow_dispatch:  # launch only by the manual trigger
-    branches:  # default branch and a `dev` to test a .whl early seems sensible
+    branches:
       - dev
       - main
 
@@ -22,7 +22,7 @@ jobs:
       uses: actions/checkout@v7
 
     - name: set up Python
-      uses: actions/setup-python@v6.2.0  # compare with https://github.com/actions
+      uses: actions/setup-python@v6.2.0  # see https://github.com/actions
       with:
         python-version: "3.13"
 
