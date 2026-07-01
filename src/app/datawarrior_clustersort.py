@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2026-03-03 Tue]
+# edit:    [2026-07-01 Wed]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -27,6 +27,8 @@ import logging
 import os
 import re
 import sys
+import tomllib
+from pathlib import Path
 from typing import Dict, List, TextIO, Tuple
 
 # Configure logging
@@ -36,6 +38,14 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[logging.FileHandler("error.log"), logging.StreamHandler(sys.stderr)],
 )
+
+
+def read_version_from_pyproject():
+    """Retrieve version information from `pyproject.toml`."""
+    pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
+    with open(pyproject_path, "rb") as f:
+        information = tomllib.load(f)
+    return information["project"]["version"]
 
 
 def get_args(arg_list) -> argparse.Namespace:
@@ -49,10 +59,13 @@ def get_args(arg_list) -> argparse.Namespace:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
+    # Note: `file` as positional parameter without `nargs="?",` is incompatible
+    # with the subsequently wanted version readout from file `pyproject.toml`.
     parser.add_argument(
         "file",
         metavar="file",
         type=argparse.FileType("rt"),
+        nargs="?",
         help="DataWarrior's cluster list which was exported as .txt file",
     )
 
@@ -64,7 +77,25 @@ def get_args(arg_list) -> argparse.Namespace:
         populous cluster the lowest label""",
     )
 
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="store_true",
+        help="Provide the version information",
+    )
+
     args = parser.parse_args(arg_list)
+
+    # an early orderly exit on version report
+    if args.version:
+        version = read_version_from_pyproject()
+        print(f"version: {version}")
+        exit(0)
+
+    # still provide a hand if neither `-h`, nor `-v` was used
+    if args.file is None and not args.version:
+        parser.error("the following arguments are required: file")
+
     return args
 
 

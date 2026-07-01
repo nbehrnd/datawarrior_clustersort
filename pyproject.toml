@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "datawarrior_clustersort"
 version = "0.1.2"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
 ]
@@ -28,7 +28,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
