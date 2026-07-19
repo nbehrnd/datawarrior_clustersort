@@ -93,3 +93,13 @@ skip-magic-trailing-comma = false
 
 [tool.codespell]
 skip = "*.dwar, *Molecules*.txt"
+
+[too.tox]
+requires = ["tox>=4.19"]
+envlist = ["py310", "py311", "py312", "py313", "py314"]
+isolated_build = true
+ignore_missing_interpreters = true
+
+[tool.tox.testenv]
+deps = ["pytest"]
+commands = [["pytest"]]
