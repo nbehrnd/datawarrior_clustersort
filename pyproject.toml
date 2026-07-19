@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools>=42"]
+requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "datawarrior_clustersort"
 version = "0.1.2"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 authors = [
     { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
 ]
@@ -93,3 +93,13 @@ skip-magic-trailing-comma = false
 
 [tool.codespell]
 skip = "*.dwar, *Molecules*.txt"
+
+[too.tox]
+requires = ["tox>=4.19"]
+envlist = ["py310", "py311", "py312", "py313", "py314"]
+isolated_build = true
+ignore_missing_interpreters = true
+
+[tool.tox.testenv]
+deps = ["pytest"]
+commands = [["pytest"]]
