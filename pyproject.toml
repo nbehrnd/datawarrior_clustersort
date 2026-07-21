@@ -44,6 +44,7 @@ dev = [
     "build>=1.2.2.post1",
     "mypy>=1.19.1",
     "pre-commit>=4.5.1",
+    "pytest>=9.0",
     "ruff>=0.15.4",
 ]
 
@@ -52,8 +53,8 @@ dev = [
     "build>=1.2.2.post1",
     "mypy>=1.19.1",
     "pre-commit>=4.5.1",
-    "ruff>=0.15.4",
     "pytest>=9.0",
+    "ruff>=0.15.4",
 ]
 
 [project.urls]
@@ -103,3 +104,10 @@ ignore_missing_interpreters = true
 [tool.tox.testenv]
 deps = ["pytest"]
 commands = [["pytest"]]
+
+[tool.mypy]
+files = "src"
+python_version = "3.13"
+strict = true  # possible because each function got all relevant type hints
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+warn_unreachable = true
