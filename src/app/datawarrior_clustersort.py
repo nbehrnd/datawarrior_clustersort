@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2026-07-01 Wed]
+# edit:    [2026-07-21 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -29,6 +29,7 @@ import re
 import sys
 import tomllib
 from pathlib import Path
+from importlib.metadata import PackageNotFoundError, version
 from typing import Dict, List, TextIO, Tuple
 
 # Configure logging
@@ -40,12 +41,16 @@ logging.basicConfig(
 )
 
 
-def read_version_from_pyproject():
-    """Retrieve version information from `pyproject.toml`."""
-    pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
-    with open(pyproject_path, "rb") as f:
-        information = tomllib.load(f)
-    return information["project"]["version"]
+def read_version_from_pyproject() -> str:
+    """Retrieve version from package metadata or pyproject.toml."""
+    try:
+        return version("datawarrior_clustersort")
+    except PackageNotFoundError:
+        # Fallback for direct script execution
+        pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
+        with open(pyproject_path, "rb") as f:
+            information = tomllib.load(f)
+        return str(information["project"]["version"])
 
 
 def get_args(arg_list) -> argparse.Namespace:
