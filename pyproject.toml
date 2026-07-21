@@ -103,3 +103,10 @@ ignore_missing_interpreters = true
 [tool.tox.testenv]
 deps = ["pytest"]
 commands = [["pytest"]]
+
+[tool.mypy]
+files = "src"
+python_version = "3.13"
+strict = true  # possible because each function got all relevant type hints
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+warn_unreachable = true
