@@ -30,7 +30,7 @@ import sys
 import tomllib
 from pathlib import Path
 from importlib.metadata import PackageNotFoundError, version
-from typing import Dict, List, TextIO, Tuple
+from typing import Dict, List, TextIO, Tuple, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -53,7 +53,7 @@ def read_version_from_pyproject() -> str:
         return str(information["project"]["version"])
 
 
-def get_args(arg_list) -> argparse.Namespace:
+def get_args(arg_list: Optional[List[str]] = None) -> argparse.Namespace:
     """Collect the arguments from the command line."""
     parser = argparse.ArgumentParser(
         description="""Sort DataWarrior's cluster list based on the number of
@@ -281,7 +281,7 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     return report_file
 
 
-def main(arg_list=None) -> None:
+def main(arg_list: Optional[List[str]] = None) -> None:
     """Join the functions."""
     args = get_args(arg_list)
     headline, table_body, old_cluster_label = file_reader(args.file)
