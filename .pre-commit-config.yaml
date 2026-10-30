@@ -30,7 +30,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.5.1
+    rev: 26.10.1
     hooks:
       - id: black
         name: black (on .py)
@@ -43,7 +43,7 @@ repos:
       - id: blacken-docs
         name: black (in code blocks .md, .rst, .tex contain)
         additional_dependencies:
-        - black==26.3.1
+        - black==26.10.1
 
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
@@ -51,13 +51,13 @@ repos:
       - id: python-use-type-annotations
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.3
     hooks:
       - id: codespell
         name: codespell (cf. configuration `[tool.codespell]`)
 
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.1
+    rev: 7.4.1
     hooks:
       - id: flake8
         name: "flake8 (advisory only, it does not block a commit)"
