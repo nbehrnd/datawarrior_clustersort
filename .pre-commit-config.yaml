@@ -45,6 +45,15 @@ repos:
         additional_dependencies:
         - black==26.10.1
 
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        # complementary plugins to mdformat
+        additional_dependencies:
+        - mdformat-gfm
+        - mdformat-black
+
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
