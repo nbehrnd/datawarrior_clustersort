@@ -1,16 +1,17 @@
 # date: [2025-01-29 Wed]
-# edit: [2026-06-17 Wed]
+# edit: [2026-11-01 Sun]
 #
 # Notes:
 #
-# - the installation by `pre-commit install` creates the local folder
-#   `~/.cache/pre-commit` in with the data supporting the hooks' work
-# - while editing the Python scripts, `pre-commit run --all-files` allows
-#   to launch the tests separately and prior to e.g., `git add *.py`
-# - if necessary, `git commit -m "commit message" --no-verify` allows to
-#   bypass the tests altogether.
+# - activation | deactivation: pre-commit install | uninstall
+# - use on each file: pre-commt run --all-files
+# - commit without a check: git commit -m "message" --no-verify
+#
+# An installation by `pre-commit install` creates the local folder
+# `~/.cache/pre-commit` in with the data supporting the hooks' work.
 
 repos:
+  # general purpose / (mostly) agnostic to the language of implementation:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v6.0.0"
     hooks:
@@ -29,14 +30,13 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
 
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.10.1
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.3
     hooks:
-      - id: black
-        name: black (on .py)
-        args:
-          - --line-length=90
+      - id: codespell
+        name: codespell (cf. configuration `[tool.codespell]`)
 
+  # with (at least some) relation to Python:
   - repo: https://github.com/adamchainz/blacken-docs
     rev: 1.20.0
     hooks:
@@ -50,11 +50,13 @@ repos:
     hooks:
       - id: python-use-type-annotations
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.3
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.10.1
     hooks:
-      - id: codespell
-        name: codespell (cf. configuration `[tool.codespell]`)
+      - id: black
+        name: black (on .py)
+        args:
+          - --line-length=90
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.4.1
