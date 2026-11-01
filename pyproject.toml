@@ -70,8 +70,22 @@ indent-style = "space"
 quote-style = "double"
 skip-magic-trailing-comma = false
 [tool.ruff.lint]
-select = [ "E", "F", "I" ]
-ignore = [ "E501" ]
+select = [
+  "B", # flake8-bugbear
+  "E", # pycodestyle, errors
+  "F", # pyflakes
+  "I", # isort
+]
+ignore = [
+  "E501", # a line too long
+]
+
+[tool.repo-review]
+ignore = [
+  "PC140",  # pre-commit type checker (it is checked elsewhere)
+  "RF002",  # additional Ruff target-version
+  "SEC001", # a zizmore check on GHA
+]
 
 [tool.codespell]
 skip = "*.dwar, *Molecules*.txt"
