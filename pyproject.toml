@@ -1,113 +1,124 @@
 [build-system]
-requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
+requires = [ "setuptools>=61" ]
 
 [project]
-name = "datawarrior_clustersort"
+name = "datawarrior-clustersort"
 version = "0.1.2"
-requires-python = ">=3.10"
-authors = [
-    { name="Norwid Behrnd", email="nbehrnd@yahoo.com" }
-]
 description = "reassign DW cluster labels by their popularity"
 readme = "docs/README.rst"
+keywords = [ "cluster", "datawarrior" ]
 license = "GPL-2.0-only"
-license-files = ["LICENSE"]
-keywords = ["datawarrior", "cluster"]
-
+license-files = [ "LICENSE" ]
+requires-python = ">=3.10"
 # https://pypi.org/classifiers/
 classifiers = [
-    "Development Status :: 4 - Beta",
-    "Environment :: Console",
-    "Intended Audience :: Education",
-    "Intended Audience :: End Users/Desktop",
-    "Intended Audience :: Information Technology",
-    "Intended Audience :: Science/Research",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Topic :: Scientific/Engineering",
-    "Topic :: Scientific/Engineering :: Bio-Informatics",
-    "Topic :: Scientific/Engineering :: Chemistry",
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Education",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+  "Topic :: Scientific/Engineering :: Chemistry",
 ]
-
 dependencies = []  # None (it works with Python's standard library alone)
-
+[[project.authors]]
+name = "Norwid Behrnd"
+email = "nbehrnd@yahoo.com"
 [project.optional-dependencies]
 dev = [
-    "build>=1.2.2.post1",
-    "mypy>=1.19.1",
-    "pre-commit>=4.5.1",
-    "pytest>=9.0",
-    "ruff>=0.15.4",
+  "build>=1.2.2.post1",
+  "mypy>=1.19.1",
+  "pre-commit>=4.5.1",
+  "pytest>=9",
+  "ruff>=0.15.4",
 ]
-
-[dependency-groups]
-dev = [
-    "build>=1.2.2.post1",
-    "mypy>=1.19.1",
-    "pre-commit>=4.5.1",
-    "pytest>=9.0",
-    "ruff>=0.15.4",
-]
-
 [project.urls]
 Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
-
 [project.scripts]
 datawarrior_clustersort = "app.datawarrior_clustersort:main"
 
-[tool.setuptools.package-data]
-"datawarrior_clustersort" = ["docs/README.md", "tests/*.txt", "tests/*.dwar"]
-
-[tool.pytest]
-pythonpath = ["src"]
-testpaths = ["tests"]
-filterwarnings = ["ignore::pytest.PytestCacheWarning"]
-markers = [
-    "blackbox: a black-box test",
-    "imported: a test which imports a function of the script",
+[dependency-groups]
+dev = [
+  "build>=1.2.2.post1",
+  "mypy>=1.19.1",
+  "pre-commit>=4.5.1",
+  "pytest>=9",
+  "ruff>=0.15.4",
 ]
-minversion = "9"
-log_level = "INFO"
-strict = true
-addopts = ["-ra"]
+
+[tool.setuptools]
+[tool.setuptools.package-data]
+datawarrior_clustersort = [ "docs/README.md", "tests/*.dwar", "tests/*.txt" ]
 
 [tool.ruff]
-line-length = 90
 target-version = "py313"
-
-[tool.ruff.lint]
-select = ["E", "F", "I"]
-ignore = ["E501"]
-
+line-length = 90
 [tool.ruff.format]
-quote-style = "double"
 indent-style = "space"
+quote-style = "double"
 skip-magic-trailing-comma = false
+[tool.ruff.lint]
+select = [
+  "B", # flake8-bugbear
+  "E", # pycodestyle, errors
+  "F", # pyflakes
+  "I", # isort
+]
+ignore = [
+  "E501", # a line too long
+]
+
+[tool.repo-review]
+ignore = [
+  "PC140",  # pre-commit type checker (it is checked elsewhere)
+  "RF002",  # additional Ruff target-version
+  "SEC001", # a zizmore check on GHA
+]
 
 [tool.codespell]
 skip = "*.dwar, *Molecules*.txt"
 
-[too.tox]
-requires = ["tox>=4.19"]
-envlist = ["py310", "py311", "py312", "py313", "py314"]
-isolated_build = true
-ignore_missing_interpreters = true
-
-[tool.tox.testenv]
-deps = ["pytest"]
-commands = [["pytest"]]
+[tool.pyproject-fmt]
+max_supported_python = "3.14"  # py315 isn't yet in osrunner ubuntu
+table_format = "long"  # default: short
 
 [tool.mypy]
 files = "src"
 python_version = "3.13"
-strict = true  # possible because each function got all relevant type hints
-enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 warn_unreachable = true
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
+strict = true  # possible because each function got all relevant type hints
+
+[tool.pytest]
+addopts = [ "-ra" ]
+filterwarnings = [ "ignore::pytest.PytestCacheWarning" ]
+log_level = "INFO"
+markers = [
+  "blackbox: a black-box test",
+  "imported: a test which imports a function of the script",
+]
+minversion = "9"
+pythonpath = [ "src" ]
+strict = true
+testpaths = [ "tests" ]
+
+[tool.tox]
+[tool.tox.testenv]
+commands = [ [ "pytest" ] ]
+deps = [ "pytest" ]
+requires = [ "tox>=4.19" ]
+envlist = [ "py310", "py311", "py312", "py313", "py314" ]
+isolated_build = true
+ignore_missing_interpreters = true
