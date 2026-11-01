@@ -6,7 +6,7 @@ requires = [ "setuptools>=61" ]
 name = "datawarrior-clustersort"
 version = "0.1.2"
 description = "reassign DW cluster labels by their popularity"
-readme = "docs/README.rst"
+readme = "README.md"
 keywords = [ "cluster", "datawarrior" ]
 license = "GPL-2.0-only"
 license-files = [ "LICENSE" ]
@@ -82,6 +82,7 @@ ignore = [
 
 [tool.repo-review]
 ignore = [
+  "PY004",  # presence of a dedicated docs/ directory
   "PC140",  # pre-commit type checker (it is checked elsewhere)
   "RF002",  # additional Ruff target-version
   "SEC001", # a zizmore check on GHA
