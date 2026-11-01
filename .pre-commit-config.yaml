@@ -80,3 +80,8 @@ repos:
           - --exit-zero
         verbose: true
         always_run: true
+
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: "50e0f3aee9dc5747a5f173f79a7417403c18dda6"
+    hooks:
+      - id: pyproject-fmt
