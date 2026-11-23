@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = [ "setuptools>=61" ]
+requires = [ "setuptools==84.2.1" ]
 
 [project]
 name = "datawarrior-clustersort"
@@ -37,11 +37,11 @@ name = "Norwid Behrnd"
 email = "nbehrnd@yahoo.com"
 [project.optional-dependencies]
 dev = [
-  "build>=1.2.2.post1",
-  "mypy>=1.19.1",
-  "pre-commit>=4.5.1",
-  "pytest>=9",
-  "ruff>=0.15.4",
+  "build==1.6.1",
+  "mypy>=2.4.1",
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
+  "ruff>=0.17.6",
 ]
 [project.urls]
 Homepage = "https://github.com/nbehrnd/datawarrior_clustersort"
@@ -50,11 +50,11 @@ datawarrior_clustersort = "app.datawarrior_clustersort:main"
 
 [dependency-groups]
 dev = [
-  "build>=1.2.2.post1",
-  "mypy>=1.19.1",
-  "pre-commit>=4.5.1",
-  "pytest>=9",
-  "ruff>=0.15.4",
+  "build==1.6.1",
+  "mypy>=2.4.1",	
+  "pre-commit==4.7.0",
+  "pytest==9.2.0",
+  "ruff>=0.17.6",
 ]
 
 [tool.setuptools]
@@ -118,7 +118,7 @@ testpaths = [ "tests" ]
 [tool.tox.testenv]
 commands = [ [ "pytest" ] ]
 deps = [ "pytest" ]
-requires = [ "tox>=4.19" ]
+requires = [ "tox==4.67.15" ]
 envlist = [ "py311", "py312", "py313", "py314" ]
 isolated_build = true
 ignore_missing_interpreters = true
