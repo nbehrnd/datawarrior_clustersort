@@ -6,7 +6,7 @@
 # author:  nbehrnd@yahoo.com
 # license: GPL v2, 2022, 2023
 # date:    [2022-04-22 Fri]
-# edit:    [2026-07-21 Tue]
+# edit:    [2026-11-17 Tue]
 """Provide a sort on DataWarrior clusters by popularity of the cluster.
 
 DataWarrior can recognize structure similarity in a set of molecules.  The
@@ -265,7 +265,7 @@ def permanent_report(input_file: str, headline: str, listing: List[str]) -> str:
     :type listing: List[str]
     :return: complete data table (headline and table body)
     :rtype: str
-    """ """Provide a permanent record DW may access.""")
+    """)
     stem_input_file = os.path.splitext(input_file)[0]
     report_file = "".join([stem_input_file, str("_sort.txt")])
 
