@@ -16,8 +16,8 @@ updates:
     cooldown:
       default-days: 7
 
-  # Maintain Python dependencies
-  - package-ecosystem: "pip"  # i.e. updates only in `pyproject.toml`
+  # Maintain git pre-commit hooks
+  - package-ecosystem: "pre-commit"
     directory: "/"
     schedule:
       interval: "monthly"
@@ -28,13 +28,13 @@ updates:
     cooldown:
       default-days: 7
 
-  # Maintain git pre-commit hooks
-  - package-ecosystem: "pre-commit"
+  # Maintain Python dependencies defined by pyproject.toml and uv.lock
+  - package-ecosystem: "uv"
     directory: "/"
     schedule:
       interval: "monthly"
     groups:
-      pip:
+      uv:
         patterns:
           - "*"
     cooldown:
