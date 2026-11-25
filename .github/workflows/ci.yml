@@ -1,4 +1,4 @@
-name: CI.yml
+name: ci.yml
 
 # name    : ci.yml
 # purpose : regularly run pytest and mypy on datawarrior_clustersort
