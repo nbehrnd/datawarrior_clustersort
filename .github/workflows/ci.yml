@@ -1,0 +1,43 @@
+name: ci.yml
+
+# name    : ci.yml
+# purpose : regularly run pytest and mypy on datawarrior_clustersort
+# date    : [2025-03-19 Wed]
+# edit      [2027-11-25 Wed]
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:     # provide the manual trigger
+
+# prevent concurrency of workflows (rule GH102):
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      UV_PYTHON_PREFERENCE: only-managed  # use uv managed Python interpreters
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup uv and latest Python 3
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3"
+          enable-cache: true
+
+      - run: uv python list --only-installed  # spot what uv sees
+      - run: uv sync --locked --all-extras --dev
+      - run: uv run pytest
+      - run: uv run mypy
