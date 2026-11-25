@@ -118,7 +118,7 @@ testpaths = [ "tests" ]
 [tool.tox.testenv]
 commands = [ [ "pytest" ] ]
 deps = [ "pytest" ]
-requires = [ "tox==4.67.15" ]
-envlist = [ "py311", "py312", "py313", "py314" ]
+requires = [ "tox==4.67.15", "tox-uv==1.37.9" ]
+envlist = [ "py311", "py312", "py313", "py314", "py315" ]
 isolated_build = true
 ignore_missing_interpreters = true
