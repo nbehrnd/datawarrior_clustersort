@@ -2,8 +2,6 @@ name: CI_tox_datawarrior_clustersort
 
 # name    : tox.yml
 # purpose : run pytest on the saturator script if deemed necessary
-# date    : [2025-07-31 Thu]
-# edit    : [2027-11-25 Wed]
 
 on:
   workflow_dispatch:  # the manual trigger
