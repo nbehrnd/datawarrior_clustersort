@@ -2,8 +2,6 @@ name: CI_wheel_datawarrior_clustersort
 
 # name:    build_wheel.yml
 # purpose: build a .whl as an artifact without a secret/GitHub token
-# date:    [2025-07-31 Thu]
-# edit:    [2026-06-28 Sun]
 
 on:
   workflow_dispatch:  # launch only by the manual trigger
@@ -11,32 +9,35 @@ on:
       - dev
       - main
 
+# prevent concurrency of workflows (rule GH102):
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
-    runs-on: ubuntu-24.04
+  test_source:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON_PREFERENCE: only-managed  # use uv managed Python interpreter
 
     timeout-minutes: 5
 
     steps:
-    - name: checkout of the local repository
-      uses: actions/checkout@v7
+      - uses: actions/checkout@v7
 
-    - name: set up Python
-      uses: actions/setup-python@v7.1.0  # see https://github.com/actions
-      with:
-        python-version: "3.13"
+      - name: Setup uv and latest Python 3
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3"
+          enable-cache: true
 
-    - name: provide a virtual environment, resolve dependencies, then build
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install build
-        python -m build
+      - name: build .whl and .tar.gz
+        run: uv build
 
-    - name: package archive `datawarrior_clustersort_wheel.zip`
-      uses: actions/upload-artifact@v7
-      with:
-        name: datawarrior_clustersort_wheel
-        path: |
-          dist/*.whl
-          dist/*.tar.gz
+      - name: package archive `datawarrior_clustersort_wheel.zip`
+        uses: actions/upload-artifact@v7
+        with:
+          name: datawarrior_clustersort_wheel
+          path: |
+            dist/*.whl
+            dist/*.tar.gz

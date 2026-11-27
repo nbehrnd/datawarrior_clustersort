@@ -35,3 +35,4 @@ remove_all_but_the_badges:
 	-rm -r reports
 
 	-pyclean .
+	-rm error.log
