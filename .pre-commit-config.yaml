@@ -37,13 +37,13 @@ repos:
         name: codespell (cf. configuration `[tool.codespell]`)
 
   # with (at least some) relation to Python:
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.20.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.6
     hooks:
-      - id: blacken-docs
-        name: black (in code blocks .md, .rst, .tex contain)
-        additional_dependencies:
-        - black==26.10.1
+    - id: ruff-check
+      args: ["--fix", "--show-fixes", "--exit-zero"]
+    - id: ruff-format
+      types_or: [python, markdown]
 
   - repo: https://github.com/hukkin/mdformat
     rev: 1.0.0
@@ -52,34 +52,11 @@ repos:
         # complementary plugins to mdformat
         additional_dependencies:
         - mdformat-gfm
-        - mdformat-black
 
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
       - id: python-use-type-annotations
-
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.10.1
-    hooks:
-      - id: black
-        name: black (on .py)
-        args:
-          - --line-length=90
-
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.5.0
-    hooks:
-      - id: flake8
-        name: "flake8 (advisory only, it does not block a commit)"
-        args:
-          - --max-line-length=90
-          - --show-source
-          - --statistics
-          - --count
-          - --exit-zero
-        verbose: true
-        always_run: true
 
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: "50e0f3aee9dc5747a5f173f79a7417403c18dda6"
