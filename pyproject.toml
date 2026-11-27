@@ -27,6 +27,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Scientific/Engineering",
   "Topic :: Scientific/Engineering :: Bio-Informatics",
   "Topic :: Scientific/Engineering :: Chemistry",
@@ -85,13 +86,16 @@ ignore = [
   "PC140",  # pre-commit type checker (it is checked elsewhere)
   "RF002",  # additional Ruff target-version
   "SEC001", # a zizmore check on GHA
+  "PC901",  # custom pre-commit CI update message
+  "PC902",  # custom pre-commit CI autofix message
+  "PC903",  # specified pre-commit CI schedule
 ]
 
 [tool.codespell]
 skip = "*.dwar, *Molecules*.txt"
 
 [tool.pyproject-fmt]
-max_supported_python = "3.14"  # py315 isn't yet in osrunner ubuntu
+max_supported_python = "3.15"
 table_format = "long"  # default: short
 
 [tool.mypy]
